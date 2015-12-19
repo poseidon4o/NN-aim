@@ -17,7 +17,7 @@ bool SDLWrapper::initSDL()
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
 		return false;
 
-	m_window = SDL_CreateWindow("Graphics HW1", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+	m_window = SDL_CreateWindow("AIM", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
 		m_width, m_height, SDL_WINDOW_OPENGL);
 	if (!m_window)
 		return false;
@@ -54,9 +54,9 @@ void SDLWrapper::setPixelColor(const int x, const int y, const unsigned char red
 
 void SDLWrapper::setPixelsColor(const int x, const int y, const int size, const unsigned char red, const unsigned char green, const unsigned char blue)
 {
-	for (size_t i = 0; i < size; i++)
+	for (int i = 0; i < size; i++)
 	{
-		for (size_t j = 0; j < size; j++)
+		for (int j = 0; j < size; j++)
 		{
 			setPixelColor(x + i, y + j, red, green, blue);
 		}

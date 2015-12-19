@@ -8,6 +8,15 @@ public:
 	~SDLWrapper();
 	bool initSDL();
 
+	inline int getWidth() const
+	{
+		return m_width;
+	}
+	inline int getHeight() const
+	{
+		return m_height;
+	}
+
 	bool quit();
 	void checkForEvent();
 
@@ -18,8 +27,8 @@ public:
 private:
 	SDL_Window * m_window;
 	SDL_Surface * m_surface;
-	int m_width;
-	int m_height;
+	const int m_width;
+	const int m_height;
 
 	//event vars
 	bool m_quit;
