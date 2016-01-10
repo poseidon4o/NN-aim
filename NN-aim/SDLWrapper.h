@@ -1,5 +1,6 @@
 #pragma once
 #include <SDL.h>
+#include "Vec2.h"
 
 class SDLWrapper
 {
@@ -20,13 +21,13 @@ public:
 	bool quit();
 	void checkForEvent();
 
-	void update() { SDL_UpdateWindowSurface(m_window); }
-	void setPixelColor(const int x, const int y, const unsigned char red, const unsigned char green, const unsigned char blue);
-	
-	void setPixelsColor(const int x, const int y, const int size, const unsigned char red, const unsigned char green, const unsigned char blue);
+	void update() { SDL_RenderPresent(m_render); }
+	void clear() { SDL_SetRenderDrawColor(m_render, 0, 0, 0, 0); SDL_RenderClear(m_render); }
+
+	void drawLine(Vector2& from, Vector2& to, const char red, const char green, const char blue);
 private:
 	SDL_Window * m_window;
-	SDL_Surface * m_surface;
+	SDL_Renderer * m_render;
 	const int m_width;
 	const int m_height;
 

@@ -2,13 +2,14 @@
 #include "SDLWrapper.h"
 
 SDLWrapper::SDLWrapper(const int width, const int height) : m_width(width), m_height(height), m_quit(false),
-	m_window(NULL), m_surface(NULL)
+	m_window(NULL), m_render(NULL)
 {
 }
 
 SDLWrapper::~SDLWrapper()
 {
 	SDL_DestroyWindow(m_window);
+	SDL_DestroyRenderer(m_render);
 	SDL_Quit();
 }
 
@@ -17,12 +18,21 @@ bool SDLWrapper::initSDL()
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
 		return false;
 
-	m_window = SDL_CreateWindow("AIM", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-		m_width, m_height, SDL_WINDOW_OPENGL);
+	m_window = SDL_CreateWindow("NN-aim", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+		m_width, m_height, SDL_WINDOW_SHOWN);
 	if (!m_window)
+	{
+		SDL_Quit();
 		return false;
-	m_surface = SDL_GetWindowSurface(m_window);
+	}
 
+	m_render = SDL_CreateRenderer(m_window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	if (!m_render)
+	{
+		SDL_DestroyWindow(m_window);
+		SDL_Quit();
+		return false;
+	}
 	return true;
 }
 
@@ -44,22 +54,9 @@ void SDLWrapper::checkForEvent()
 	}
 }
 
-void SDLWrapper::setPixelColor(const int x, const int y, const unsigned char red, const unsigned char green, const unsigned char blue)
+void SDLWrapper::drawLine(Vector2& from, Vector2& to, const char red, const char green, const char blue)
 {
-	if (x >= m_width || y >= m_height)
-		return;
-	Uint32 * pixels = static_cast<Uint32*>(m_surface->pixels);
-	pixels[x + m_width * y] = SDL_MapRGB(m_surface->format, red, green, blue);
+	SDL_SetRenderDrawColor(m_render, red, green, blue, 0);
+	SDL_RenderDrawLine(m_render, from.getIntX(), from.getIntY(), to.getIntX(), to.getIntY());
 }
 
-void SDLWrapper::setPixelsColor(const int x, const int y, const int size, const unsigned char red, const unsigned char green, const unsigned char blue)
-{
-	for (int i = 0; i < size; i++)
-	{
-		for (int j = 0; j < size; j++)
-		{
-			setPixelColor(x + i, y + j, red, green, blue);
-		}
-	}
-
-}
