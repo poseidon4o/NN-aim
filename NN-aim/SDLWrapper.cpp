@@ -65,6 +65,7 @@ void SDLWrapper::drawLine(Vector2& from, Vector2& to, const char red, const char
 SDL_Texture * SDLWrapper::createTex(SDL_Surface * surf)
 {
 	SDL_Texture * res = SDL_CreateTextureFromSurface(m_render, surf);
+	SDL_SetTextureBlendMode(res, SDL_BLENDMODE_ADD);
 	if (res)
 	{
 		SDL_FreeSurface(surf);
@@ -77,7 +78,7 @@ int SDLWrapper::drawTex(SDL_Texture * tex, Vector2& center)
 {
 	SDL_Rect rect;
 	SDL_QueryTexture(tex, NULL, NULL, &rect.w, &rect.h);
-	rect.x = center.getIntX() + rect.w/2;
-	rect.y = center.getIntY() + rect.h/2;
+	rect.x = center.getIntX() - rect.w/2;
+	rect.y = center.getIntY() - rect.h/2;
 	return SDL_RenderCopy(m_render, tex, NULL, &rect);
 }
