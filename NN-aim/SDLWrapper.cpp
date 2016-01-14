@@ -73,11 +73,11 @@ SDL_Texture * SDLWrapper::createTex(SDL_Surface * surf)
 	return res;
 }
 
-int SDLWrapper::drawTex(SDL_Texture * tex, Vector2& topLeft)
+int SDLWrapper::drawTex(SDL_Texture * tex, Vector2& center)
 {
 	SDL_Rect rect;
-	rect.x = topLeft.getIntX();
-	rect.y = topLeft.getIntY();
 	SDL_QueryTexture(tex, NULL, NULL, &rect.w, &rect.h);
+	rect.x = center.getIntX() + rect.w/2;
+	rect.y = center.getIntY() + rect.h/2;
 	return SDL_RenderCopy(m_render, tex, NULL, &rect);
 }

@@ -28,7 +28,7 @@ public:
 	void drawLine(Vector2& from, Vector2& to, const char red, const char green, const char blue);
 
 	SDL_Texture * createTex(SDL_Surface * surf);
-	int drawTex(SDL_Texture * tex, Vector2& topLeft);
+	int drawTex(SDL_Texture * tex, Vector2& center);
 
 private:
 	SDL_Window * m_window;
