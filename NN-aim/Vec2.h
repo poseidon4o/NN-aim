@@ -26,6 +26,16 @@ struct Vector2
 		return Vector2(x - r.x, y - r.y);
 	}
 
+	inline Vector2 operator*(const float r)
+	{
+		return Vector2(x * r, y * r);
+	}
+
+	inline Vector2 operator/(const float r)
+	{
+		return Vector2(x / r, y / r);
+	}
+
 	inline Vector2& operator+=(const Vector2& r)
 	{
 		x += r.x;
@@ -40,4 +50,17 @@ struct Vector2
 		return *this;
 	}
 
+	inline Vector2& operator*=(const float r)
+	{
+		x *= r;
+		y *= r;
+		return *this;
+	}
+
+	inline Vector2& operator/=(const float r)
+	{
+		x /= r;
+		y /= r;
+		return *this;
+	}
 };
