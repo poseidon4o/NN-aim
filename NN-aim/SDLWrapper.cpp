@@ -8,6 +8,8 @@ SDLWrapper::SDLWrapper(const int width, const int height) : m_width(width), m_he
 
 SDLWrapper::~SDLWrapper()
 {
+	for (auto it : m_textures)
+		SDL_DestroyTexture(it);
 	SDL_DestroyWindow(m_window);
 	SDL_DestroyRenderer(m_render);
 	SDL_Quit();
@@ -60,3 +62,22 @@ void SDLWrapper::drawLine(Vector2& from, Vector2& to, const char red, const char
 	SDL_RenderDrawLine(m_render, from.getIntX(), from.getIntY(), to.getIntX(), to.getIntY());
 }
 
+SDL_Texture * SDLWrapper::createTex(SDL_Surface * surf)
+{
+	SDL_Texture * res = SDL_CreateTextureFromSurface(m_render, surf);
+	if (res)
+	{
+		SDL_FreeSurface(surf);
+		m_textures.push_back(res);
+	}
+	return res;
+}
+
+int SDLWrapper::drawTex(SDL_Texture * tex, Vector2& topLeft)
+{
+	SDL_Rect rect;
+	rect.x = topLeft.getIntX();
+	rect.y = topLeft.getIntY();
+	SDL_QueryTexture(tex, NULL, NULL, &rect.w, &rect.h);
+	return SDL_RenderCopy(m_render, tex, NULL, &rect);
+}

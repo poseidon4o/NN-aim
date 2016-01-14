@@ -1,22 +1,22 @@
 #include <iostream>
 #include "SDLWrapper.h"
 #include "SDL.h"
-#include "Dot.h"
+#include "utils.h"
 
 int main(int argc, char * argv[])
 {
 	SDLWrapper sdl(640, 480);
 	sdl.initSDL();
-	Dot test(200.f, 200.f, 10.f);
 
-	Vector2 from(0.f,0.f), size(40.f,40.f) ,step(20.f, 20.f);
-
+	Vector2 from(0.f,0.f), step(5.f, 5.f);
+	SDL_Surface * p1 = drawCircle(20, 0xff, 0, 0xff);
+	SDL_Texture * tex = sdl.createTex(p1);
 
 	while (!sdl.quit())
 	{
 		sdl.checkForEvent();
 		sdl.clear();
-		sdl.drawLine(from, from + size, 0xff, 0x00, 0x00);
+		sdl.drawTex(tex, from);
 		sdl.update();
 
 		from += step;
