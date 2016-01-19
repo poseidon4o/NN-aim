@@ -6,12 +6,12 @@ struct Vector2
 	Vector2() : x(0.f), y(0.f) {}
 	Vector2(const float _x, const float _y) : x(_x), y(_y) {}
 
-	inline int getIntX()
+	inline int getIntX() const
 	{
 		return static_cast<int>(x + 0.5f);
 	}
 
-	inline int getIntY()
+	inline int getIntY() const
 	{
 		return static_cast<int>(y + 0.5f);
 	}

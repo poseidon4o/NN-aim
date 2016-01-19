@@ -25,7 +25,7 @@ int main(int argc, char * argv[])
 		sdl.clear();
 		//sdl.drawTex(tex, from);
 		player.draw(&sdl);
-		player.move(0.8f);
+		player.move(2.8f);
 		sdl.update();
 
 		from += step;

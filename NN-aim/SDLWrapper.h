@@ -25,10 +25,10 @@ public:
 	void update() { SDL_RenderPresent(m_render); }
 	void clear() { SDL_SetRenderDrawColor(m_render, 0, 0, 0, 0); SDL_RenderClear(m_render); }
 
-	void drawLine(Vector2& from, Vector2& to, const char red, const char green, const char blue);
+	void drawLine(const Vector2& from, const Vector2& to, const char red, const char green, const char blue);
 
 	SDL_Texture * createTex(SDL_Surface * surf);
-	int drawTex(SDL_Texture * tex, Vector2& center);
+	int drawTex(SDL_Texture * tex, const Vector2& center);
 
 private:
 	SDL_Window * m_window;

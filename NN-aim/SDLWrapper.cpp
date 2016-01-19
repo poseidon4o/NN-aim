@@ -56,7 +56,7 @@ void SDLWrapper::checkForEvent()
 	}
 }
 
-void SDLWrapper::drawLine(Vector2& from, Vector2& to, const char red, const char green, const char blue)
+void SDLWrapper::drawLine(const Vector2& from, const Vector2& to, const char red, const char green, const char blue)
 {
 	SDL_SetRenderDrawColor(m_render, red, green, blue, 0);
 	SDL_RenderDrawLine(m_render, from.getIntX(), from.getIntY(), to.getIntX(), to.getIntY());
@@ -74,7 +74,7 @@ SDL_Texture * SDLWrapper::createTex(SDL_Surface * surf)
 	return res;
 }
 
-int SDLWrapper::drawTex(SDL_Texture * tex, Vector2& center)
+int SDLWrapper::drawTex(SDL_Texture * tex, const Vector2& center)
 {
 	SDL_Rect rect;
 	SDL_QueryTexture(tex, NULL, NULL, &rect.w, &rect.h);
