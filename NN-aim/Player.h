@@ -31,4 +31,6 @@ private:
 	float m_fovScale;
 	float m_crnMargin;
 
+	Vector2 m_leftAim;
+	Vector2 m_rightAim;
 };
