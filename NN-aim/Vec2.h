@@ -63,4 +63,17 @@ struct Vector2
 		y /= r;
 		return *this;
 	}
+
+	inline float length()
+	{
+		return sqrt(x * x + y * y);
+	}
+
+	inline Vector2& normalize()
+	{
+		float len = length();
+		x /= len;
+		y /= len;
+		return *this;
+	}
 };
