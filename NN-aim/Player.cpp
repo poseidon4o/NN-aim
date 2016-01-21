@@ -1,5 +1,7 @@
 #include "Player.h"
 
+#include "utils.h"
+
 void Player::draw(SDLWrapper * sdl)
 {
 	sdl->drawLine(m_pos, m_leftAim, 0, 0xff, 0xff);
@@ -22,3 +24,13 @@ void Player::move(float stepSize)
 	//TODO:calc in the proper way
 	m_crnMargin /= 1.005;
 }
+
+bool Player::isInFov(const Vector2& pos, float radius)
+{
+	Vector2 tri[3] = {m_pos, m_leftAim, m_rightAim};
+	bool res = intersectCircleTriangle(pos,radius, tri);
+	if (res)
+		m_dir *= -1;
+	return res;
+}
+

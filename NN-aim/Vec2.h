@@ -70,6 +70,11 @@ struct Vector2
 		return sqrt(x * x + y * y);
 	}
 
+	inline float lengthSq()
+	{
+		return x * x + y * y;
+	}
+
 	inline Vector2& normalize()
 	{
 		float len = length();

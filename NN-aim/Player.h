@@ -19,7 +19,7 @@ public:
 
 	void draw(SDLWrapper * sdl);
 	void move(float stepSize = 0.5f);
-	//bool isInFov(const Vector2& pos, float radius);
+	bool isInFov(const Vector2& pos, float radius);
 
 	Vector2 m_pos;
 	Vector2 m_dir;

@@ -6,6 +6,9 @@
 
 int main(int argc, char * argv[])
 {
+	Vector2 bulletPos(450.f, 450.f);
+	float bulletRad = 25.f;
+
 	SDLWrapper sdl(640, 480);
 	sdl.initSDL();
 
@@ -15,18 +18,27 @@ int main(int argc, char * argv[])
 	SDL_Surface * sur = drawCircle(25, 0xff, 0, 0xff);
 	SDL_Texture * p1 = sdl.createTex(sur);
 
-	sur = drawCircle(7, 0xff, 0xff, 0xff);
+	sur = drawCircle(25, 0xff, 0xff, 0x00);
 	SDL_Texture * bullet = sdl.createTex(sur);
-	Player player(p1, bullet, from, step, 5.f);
+
+
+	sur = drawCircle(7, 0xff, 0xff, 0xff);
+	SDL_Texture * eye = sdl.createTex(sur);
+	Player player(p1, eye, from, step, 5.f);
 
 
 	while (!sdl.quit())
 	{
+
 		sdl.checkForEvent();
 		sdl.clear();
-		//sdl.drawTex(tex, from);
+
+		//TODO: remove, only to check intersect algo
+		sdl.drawTex(bullet, bulletPos);
+
 		player.draw(&sdl);
 		player.move(0.8f);
+		player.isInFov(bulletPos, bulletRad);
 		sdl.update();
 
 		from += step;
