@@ -17,7 +17,7 @@ int main(int argc, char * argv[])
 
 	sur = drawCircle(7, 0xff, 0xff, 0xff);
 	SDL_Texture * bullet = sdl.createTex(sur);
-	Player player(p1, bullet, from, step);
+	Player player(p1, bullet, from, step, 5.f);
 
 
 	while (!sdl.quit())

@@ -2,12 +2,10 @@
 
 void Player::draw(SDLWrapper * sdl)
 {
-	Vector2 aim = m_pos + m_dir * m_scaleForAim;
-	Vector2 offset = m_pos - aim;
+	Vector2 aim = m_pos + m_dir * m_fovScale;
+	Vector2 offset = (m_pos - aim).perp();
 
 	//find perpendiculiar
-	std::swap(offset.x, offset.y);
-	offset.x *= -1;
 	offset *= m_crnMargin;
 
 	sdl->drawLine(m_pos, offset + aim, 0, 0xff, 0xff);

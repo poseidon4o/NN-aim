@@ -1,4 +1,5 @@
 #pragma once
+#include <cmath>
 
 struct Vector2
 {
@@ -75,5 +76,16 @@ struct Vector2
 		x /= len;
 		y /= len;
 		return *this;
+	}
+
+	float dotProduct(const Vector2& right)
+	{
+		return x * right.x + y * right.y;
+	}
+
+	//returns new vector perpendiculiar to this
+	Vector2 perp()
+	{
+		return Vector2(-y, x);
 	}
 };
