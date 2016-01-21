@@ -1,5 +1,6 @@
 #include "utils.h"
 #include <cmath>
+#include <algorithm>
 
 void set_pixel(SDL_Surface *surface, int x, int y, Uint32 pixel)
 {
@@ -49,3 +50,46 @@ bool pointInTriangle(const Vector2& pnt, const Vector2 tri[3])
 	}
 	return true;
 }
+
+Vector2 closestPointOnSegment(Vector2 pnt, Vector2 a, Vector2 b) {
+
+	Vector2 dir = b - a;
+	float t = (pnt - a).dotProduct(dir) / dir.dotProduct(dir);
+	t = std::max(0.f, t);
+	t = std::min(1.f, t);
+
+	return a + dir * t;
+
+}
+
+Vector2 closestPointOnTriangle(Vector2 p, Vector2 v[3]) {
+
+	if (pointInTriangle(p, v))
+		return p;
+
+	float maxDist = 10000.f;
+	Vector2 closest;
+
+	for (int i = 0; i < 3; ++i)
+	{
+		Vector2 temp = closestPointOnSegment(p, v[i], v[(i + 1) % 3]);
+		float dist = (temp - p).lengthSq();
+
+		if (dist < maxDist)
+		{
+			maxDist = dist;
+			closest = temp;
+		}
+
+	}
+	return closest;
+}
+
+bool intersectCircleTriangle(Vector2 center, float radius, Vector2 v[3])
+{
+	Vector2 closest = closestPointOnTriangle(center, v);
+	float dist = (center - closest).lengthSq();
+
+	return dist < radius * radius;
+}
+
