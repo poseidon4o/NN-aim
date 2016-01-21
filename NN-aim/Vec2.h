@@ -17,22 +17,22 @@ struct Vector2
 		return static_cast<int>(y + 0.5f);
 	}
 
-	inline Vector2 operator+(const Vector2& r)
+	inline Vector2 operator+(const Vector2& r) const
 	{
 		return Vector2(x + r.x, y + r.y);
 	}
 
-	inline Vector2 operator-(const Vector2& r)
+	inline Vector2 operator-(const Vector2& r) const
 	{
 		return Vector2(x - r.x, y - r.y);
 	}
 
-	inline Vector2 operator*(const float r)
+	inline Vector2 operator*(const float r) const
 	{
 		return Vector2(x * r, y * r);
 	}
 
-	inline Vector2 operator/(const float r)
+	inline Vector2 operator/(const float r) const
 	{
 		return Vector2(x / r, y / r);
 	}

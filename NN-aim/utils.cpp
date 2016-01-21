@@ -39,3 +39,13 @@ SDL_Surface *  drawCircle(const float radius, const char red, const char green, 
 
 	return result;
 }
+
+bool pointInTriangle(const Vector2& pnt, const Vector2 tri[3])
+{
+	for (int i = 0; i < 3; ++i) {
+		Vector2 normal = (tri[(i + 1) % 3] - tri[i]).perp();
+		if ((pnt - tri[i]).dotProduct(normal) < 0.f)
+			return false;
+	}
+	return true;
+}
