@@ -10,7 +10,7 @@ void Player::draw(SDLWrapper * sdl)
 	sdl->drawLine(m_leftAim, m_rightAim, 0xff, 0, 0);
 
 	sdl->drawTex(m_body, m_pos);
-	sdl->drawTex(m_eye, m_pos + m_dir * m_size);
+	sdl->drawTex(m_eye, m_pos + m_dir * static_cast<float>(m_size));
 }
 
 void Player::move(float speed, SDL_Rect& area)
@@ -30,9 +30,6 @@ void Player::move(float speed, SDL_Rect& area)
 	offset *= m_crnMargin;
 	m_leftAim = aim + offset;
 	m_rightAim = aim - offset;
-
-	//TODO:calc in the proper way
-	m_crnMargin /= 1.005;
 }
 
 bool Player::isInFov(const Vector2& pos, float radius)
