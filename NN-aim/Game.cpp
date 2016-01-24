@@ -16,11 +16,11 @@ bool Game::init(SDLWrapper * sdl)
 	m_sdl = sdl;
 
 	//init rectangles
-	m_plAreas[0].x = m_plAreas[1].x = 0;
-	m_plAreas[0].y = 0;
-	m_plAreas[1].y = width - playerFieldWidth;
+	m_plAreas[0].x = 0;
+	m_plAreas[1].x = width - playerFieldWidth;
+	m_plAreas[0].y = m_plAreas[1].y = 0;
 	m_plAreas[0].h = m_plAreas[1].h = height;
-	m_plAreas[0].x = m_plAreas[1].w = playerFieldWidth;
+	m_plAreas[0].w = m_plAreas[1].w = playerFieldWidth;
 
 	//init textures
 	SDL_Surface * tmpSur;
@@ -41,6 +41,12 @@ bool Game::init(SDLWrapper * sdl)
 	m_players[1] = new Player(texPlayer2, texEye, rightStPos, rightStDir, fovLen);
 
 	return true;
+}
+
+void Game::move()
+{
+	for (int i = 0; i < 2; ++i)
+		m_players[i]->move(1.f, m_plAreas[i]);
 }
 
 void Game::draw()

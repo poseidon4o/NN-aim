@@ -36,6 +36,7 @@ public:
 	bool init(SDLWrapper * sdl);
 
 	void draw();
+	void move();
 
 	Player * m_players[2];
 private:

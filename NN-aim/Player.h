@@ -18,7 +18,7 @@ public:
 	}
 
 	void draw(SDLWrapper * sdl);
-	void move(float speed, SDL_Rect& area);
+	void move(float speed, const SDL_Rect& area);
 	bool isInFov(const Vector2& pos, float radius);
 
 	Vector2 m_pos;

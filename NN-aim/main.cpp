@@ -13,12 +13,10 @@ int main(int argc, char * argv[])
 	Game game;
 	game.init(&sdl);
 
-	game.m_players[0]->move(1.f, SDL_Rect{ 0,0,640,480 });
-	game.m_players[1]->move(1.f, SDL_Rect{ 0,0,640,480 });
-
 	while (!sdl.quit())
 	{
 		sdl.checkForEvent();
+		game.move();
 		game.draw();
 
 		SDL_Delay(5);

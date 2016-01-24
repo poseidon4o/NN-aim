@@ -13,7 +13,7 @@ void Player::draw(SDLWrapper * sdl)
 	sdl->drawTex(m_eye, m_pos + m_dir * static_cast<float>(m_size));
 }
 
-void Player::move(float speed, SDL_Rect& area)
+void Player::move(float speed, const SDL_Rect& area)
 {
 	m_pos += (m_dir * speed);
 	int crnLimit = area.x + m_size;
