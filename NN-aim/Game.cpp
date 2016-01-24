@@ -61,3 +61,57 @@ void Game::draw()
 	m_sdl->update();
 
 }
+
+//players setters
+void Game::move(int player)
+{
+	m_players[player]->move(playerSpeed, m_plAreas[player]);
+}
+
+void Game::turnLeft(int player)
+{
+	const float x = m_players[player]->m_dir.x;
+	const float y = m_players[player]->m_dir.y;
+	m_players[player]->m_dir.x = x * cos(rotStep) - y * sin(rotStep);
+	m_players[player]->m_dir.y = x * sin(rotStep) + y * cos(rotStep);
+}
+
+void Game::turnRight(int player)
+{
+	const float x = m_players[player]->m_dir.x;
+	const float y = m_players[player]->m_dir.y;
+	m_players[player]->m_dir.x = x * cos(-rotStep) - y * sin(-rotStep);
+	m_players[player]->m_dir.y = x * sin(-rotStep) + y * cos(-rotStep);
+}
+
+void Game::changeFov(int player, float mult)
+{
+	m_players[player]->m_fovScale *= mult;
+}
+
+void Game::shoot(int player)
+{
+	//TODO: impl
+}
+
+//players read input
+bool Game::playerInFov(int player)
+{
+	return m_players[player]->isInFov(m_players[(player + 1) %2]->m_pos, playerRad);
+}
+
+bool Game::bulletInFov(int player)
+{
+	return true;
+}
+
+float Game::currentFov(int player)
+{
+	return m_players[player]->m_fovScale;
+}
+
+bool Game::canShoot(int player)
+{
+	//TODO: impl
+	return true;
+}

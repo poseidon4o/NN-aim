@@ -20,6 +20,7 @@ const float fovLen = 5.f;
 //offset = speed * dir
 const float playerSpeed = 2.f;
 const float bulletSpeed = 4.f;
+const float rotStep = 0.05f;
 
 //start pos
 const Vector2 leftStPos(100.f, 240.f);
@@ -37,6 +38,18 @@ public:
 
 	void draw();
 	void move();
+
+	//players are 0 and 1
+	void move(int player);
+	void turnLeft(int player);
+	void turnRight(int player);
+	void changeFov(int player, float mult);
+	void shoot(int player);
+
+	bool playerInFov(int player);
+	bool bulletInFov(int player);
+	float currentFov(int player);
+	bool canShoot(int player);
 
 	Player * m_players[2];
 private:

@@ -18,6 +18,8 @@ int main(int argc, char * argv[])
 		sdl.checkForEvent();
 		game.move();
 		game.draw();
+		game.turnLeft(0);
+		game.turnRight(1);
 
 		SDL_Delay(5);
 	}

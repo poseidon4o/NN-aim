@@ -23,12 +23,12 @@ public:
 
 	Vector2 m_pos;
 	Vector2 m_dir;
+	float m_fovScale;
 private:
 	SDL_Texture * m_body;
 	SDL_Texture * m_eye;
 
 	int m_size;
-	float m_fovScale;
 	float m_crnMargin;
 
 	Vector2 m_leftAim;
