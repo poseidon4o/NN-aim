@@ -13,12 +13,12 @@ public:
 	{
 		int w;
 		SDL_QueryTexture(body, NULL, NULL, &w, NULL);
-		m_scaleForEye = w / 2;
+		m_size = w / 2;
 		m_fovScale *= w;
 	}
 
 	void draw(SDLWrapper * sdl);
-	void move(float stepSize = 0.5f);
+	void move(float speed, SDL_Rect& area);
 	bool isInFov(const Vector2& pos, float radius);
 
 	Vector2 m_pos;
@@ -27,7 +27,7 @@ private:
 	SDL_Texture * m_body;
 	SDL_Texture * m_eye;
 
-	float m_scaleForEye;
+	int m_size;
 	float m_fovScale;
 	float m_crnMargin;
 

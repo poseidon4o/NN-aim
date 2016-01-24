@@ -6,14 +6,24 @@ void Player::draw(SDLWrapper * sdl)
 {
 	sdl->drawLine(m_pos, m_leftAim, 0, 0xff, 0xff);
 	sdl->drawLine(m_pos, m_rightAim, 0, 0xff, 0xff);
+	//TODO: remove next line (its just for test)
+	sdl->drawLine(m_leftAim, m_rightAim, 0xff, 0, 0);
 
 	sdl->drawTex(m_body, m_pos);
-	sdl->drawTex(m_eye, m_pos + m_dir * m_scaleForEye);
+	sdl->drawTex(m_eye, m_pos + m_dir * m_size);
 }
 
-void Player::move(float stepSize)
+void Player::move(float speed, SDL_Rect& area)
 {
-	m_pos += (m_dir * stepSize);
+	m_pos += (m_dir * speed);
+	int crnLimit = area.x + m_size;
+	if (m_pos.getIntX() < crnLimit) m_pos.x = static_cast<float>(crnLimit);
+	crnLimit = area.y + m_size;
+	if (m_pos.getIntY() < crnLimit) m_pos.y = static_cast<float>(crnLimit);
+	crnLimit = area.x + area.w - m_size;
+	if (m_pos.getIntX() > crnLimit) m_pos.x = static_cast<float>(crnLimit);
+	crnLimit = area.y + area.h - m_size;
+	if (m_pos.getIntY() > crnLimit) m_pos.y = static_cast<float>(crnLimit);
 
 	Vector2 aim = m_pos + m_dir * m_fovScale;
 	Vector2 offset = (m_pos - aim).perp();
