@@ -46,7 +46,7 @@ bool Game::init(SDLWrapper * sdl)
 void Game::move()
 {
 	for (int i = 0; i < 2; ++i)
-		m_players[i]->move(1.f, m_plAreas[i]);
+		m_players[i]->move(0.f, m_plAreas[i]);
 }
 
 void Game::draw()
@@ -86,7 +86,7 @@ void Game::turnRight(int player)
 
 void Game::changeFov(int player, float mult)
 {
-	m_players[player]->m_fovScale *= mult;
+	m_players[player]->m_crnMargin *= mult;
 }
 
 void Game::shoot(int player)
@@ -102,12 +102,13 @@ bool Game::playerInFov(int player)
 
 bool Game::bulletInFov(int player)
 {
+	//TODO: impl
 	return true;
 }
 
 float Game::currentFov(int player)
 {
-	return m_players[player]->m_fovScale;
+	return m_players[player]->m_crnMargin;
 }
 
 bool Game::canShoot(int player)

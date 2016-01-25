@@ -9,7 +9,7 @@ public:
 	Player(SDL_Texture * body, SDL_Texture * eye, Vector2 pos, Vector2 dir, float fovScale) :
 		m_body(body), m_eye(eye), m_pos(pos), m_dir(dir), m_fovScale(fovScale),
 		//TODO: set it proper
-		m_crnMargin(0.5f)
+		m_crnMargin(0.1f)
 	{
 		int w;
 		SDL_QueryTexture(body, NULL, NULL, &w, NULL);
@@ -23,13 +23,13 @@ public:
 
 	Vector2 m_pos;
 	Vector2 m_dir;
-	float m_fovScale;
+	float m_crnMargin;
 private:
 	SDL_Texture * m_body;
 	SDL_Texture * m_eye;
 
 	int m_size;
-	float m_crnMargin;
+	float m_fovScale;
 
 	Vector2 m_leftAim;
 	Vector2 m_rightAim;
