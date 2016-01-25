@@ -63,6 +63,20 @@ void Game::reset()
 	
 }
 
+void Game::drawScore()
+{
+	for (int i = 0; i < m_score[0]; ++i)
+	{
+		const Vector2 pos(i * bulletRad * 2 + bulletRad, bulletRad);
+		m_sdl->drawTex(m_texBullet, pos);
+	}
+	for (int i = 0; i < m_score[1]; ++i)
+	{
+		const Vector2 pos(width - i * bulletRad * 2 + bulletRad, bulletRad);
+		m_sdl->drawTex(m_texBullet, pos);
+	}
+}
+
 void Game::move()
 {
 	//this hack fix player fov and rotation
@@ -93,8 +107,9 @@ void Game::draw()
 	}
 	m_sdl->drawLine(Vector2(playerFieldWidth, 0.f), Vector2(playerFieldWidth, height), 0xff, 0xff, 0xff);
 	m_sdl->drawLine(Vector2(playerFieldWidth + bufferZoneSize, 0.f), Vector2(playerFieldWidth + bufferZoneSize, height), 0xff, 0xff, 0xff);
-	m_sdl->update();
 
+	drawScore();
+	m_sdl->update();
 }
 
 //players setters

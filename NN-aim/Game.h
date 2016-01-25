@@ -73,4 +73,5 @@ private:
 	void checkForHit();
 	void remInactiveBullets();
 	bool checkForColision(const Vector2& lPos, const Vector2& rPos, const float lRad, const float rRad);
+	void drawScore();
 };

@@ -1,5 +1,6 @@
 #include <iostream>
 #include "Game.h"
+#include <ctime>
 
 
 int main(int argc, char * argv[])
@@ -12,24 +13,31 @@ int main(int argc, char * argv[])
 
 	Game game;
 	game.init(&sdl);
-	int cnt = 0;
 	while (!sdl.quit())
 	{
-		cnt++;
+		//call this methods every frame
+		SDL_Delay(5);
 		sdl.checkForEvent();
 		game.move();
 		game.draw();
-		game.turnLeft(0);
-		game.turnRight(1);
-		game.shoot(0);
-		game.shoot(1);
-		if (cnt > 500)
+		int move = 0;
+		srand(time(NULL));
+		//methods used to control players
+		for (int i = 0; i < 2; ++i)
 		{
-			SDL_Delay(500);
-			cnt = 0;
-			game.reset();
+			move = rand() % 4;
+			switch (move)
+			{
+			case 0:
+				game.turnLeft(i);
+			case 1:
+				game.turnRight(i);
+			case 2:
+				game.move(i);
+			case 3:
+				game.shoot(i);
+			}
 		}
-		SDL_Delay(5);
 	}
 	return 0;
 }
