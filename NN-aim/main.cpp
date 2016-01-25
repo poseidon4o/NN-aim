@@ -16,12 +16,13 @@ int main(int argc, char * argv[])
 	while (!sdl.quit())
 	{
 		//call this methods every frame
-		SDL_Delay(5);
+		SDL_Delay(1);
 		sdl.checkForEvent();
 		game.move();
 		game.draw();
 		int move = 0;
-		srand(time(NULL));
+		srand(0);
+
 		//methods used to control players
 		for (int i = 0; i < 2; ++i)
 		{
@@ -29,13 +30,13 @@ int main(int argc, char * argv[])
 			switch (move)
 			{
 			case 0:
-				game.turnLeft(i);
+				game.turnLeft(i); break;
 			case 1:
-				game.turnRight(i);
+				game.turnRight(i); break;
 			case 2:
-				game.move(i);
+				game.move(i); break;
 			case 3:
-				game.shoot(i);
+				game.shoot(i); break;
 			}
 		}
 	}
