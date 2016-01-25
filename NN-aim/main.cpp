@@ -20,6 +20,8 @@ int main(int argc, char * argv[])
 		game.draw();
 		game.turnLeft(0);
 		game.turnRight(1);
+		game.shoot(0);
+		game.shoot(1);
 
 		SDL_Delay(5);
 	}

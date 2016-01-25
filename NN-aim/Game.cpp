@@ -2,7 +2,7 @@
 
 Game::Game()
 {
-	
+	m_score[0] = m_score[1] = 0;
 }
 
 Game::~Game()
@@ -33,7 +33,7 @@ bool Game::init(SDLWrapper * sdl)
 	tmpSur = drawCircle(playerEyeRad, 0xff, 0xff, 0xff);
 	SDL_Texture * texEye = m_sdl->createTex(tmpSur);
 
-	tmpSur = drawCircle(playerRad, 0, 0xff, 0xff);
+	tmpSur = drawCircle(bulletRad, 0, 0xff, 0xff);
 	m_texBullet = m_sdl->createTex(tmpSur);
 
 	//init players
@@ -45,8 +45,20 @@ bool Game::init(SDLWrapper * sdl)
 
 void Game::move()
 {
+	//this hack fix player fov and rotation
 	for (int i = 0; i < 2; ++i)
 		m_players[i]->move(0.f, m_plAreas[i]);
+
+	//move all bulets too
+	for (int i = 0; i < 2; ++i)
+	{
+		if (m_bullets[i].active)
+		{
+			m_bullets[i].pos += m_bullets[i].dir * bulletSpeed;
+		}
+	}
+	remInactiveBullets();
+	checkForHit();
 }
 
 void Game::draw()
@@ -54,7 +66,11 @@ void Game::draw()
 	m_sdl->clear();
 	for (int i = 0; i < 2; ++i)
 		m_players[i]->draw(m_sdl);
-
+	for (int i = 0; i < 2; ++i)
+	{
+		if (m_bullets[i].active)
+			m_sdl->drawTex(m_texBullet, m_bullets[i].pos);
+	}
 	m_sdl->drawLine(Vector2(playerFieldWidth, 0.f), Vector2(playerFieldWidth, height), 0xff, 0xff, 0xff);
 	m_sdl->drawLine(Vector2(playerFieldWidth + bufferZoneSize, 0.f), Vector2(playerFieldWidth + bufferZoneSize, height), 0xff, 0xff, 0xff);
 
@@ -91,7 +107,12 @@ void Game::changeFov(int player, float mult)
 
 void Game::shoot(int player)
 {
-	//TODO: impl
+	if (canShoot(player))
+	{
+		m_bullets[player].pos = m_players[player]->m_pos;
+		m_bullets[player].dir = m_players[player]->m_dir;
+		m_bullets[player].active = true;
+	}
 }
 
 //players read input
@@ -102,8 +123,7 @@ bool Game::playerInFov(int player)
 
 bool Game::bulletInFov(int player)
 {
-	//TODO: impl
-	return true;
+	return m_players[player]->isInFov(m_bullets[(player + 1) % 2].pos, bulletRad);
 }
 
 float Game::currentFov(int player)
@@ -113,6 +133,41 @@ float Game::currentFov(int player)
 
 bool Game::canShoot(int player)
 {
-	//TODO: impl
-	return true;
+	return !m_bullets[player].active;
+}
+
+
+//private methods
+void Game::checkForHit()
+{
+	for (int i = 0; i < 2; ++i)
+	{
+		if (m_bullets[i].active)
+		{
+			if (checkForColision(m_bullets[i].pos, m_players[(i + 1) % 2]->m_pos, bulletRad, playerRad))
+			{
+				m_score[i]++;
+				m_bullets[i].active = false;
+			}
+		}
+	}
+}
+
+void Game::remInactiveBullets()
+{
+	for (int i = 0; i < 2; ++i)
+	{
+		if (m_bullets[i].active)
+			if (m_bullets[i].pos.x > width || m_bullets[i].pos.x < 0
+				|| m_bullets[i].pos.y > height || m_bullets[i].pos.y < 0)
+				m_bullets[i].active = false;
+	}
+}
+
+bool Game::checkForColision(const Vector2& lPos, const Vector2& rPos, const float lRad, const float rRad)
+{
+	const float xDif = lPos.x - rPos.x;
+	const float yDif = lPos.y - rPos.y;
+	const float sumRad = lRad + rRad;
+	return xDif * xDif + yDif * yDif <= sumRad * sumRad;
 }

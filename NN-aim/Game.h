@@ -28,6 +28,14 @@ const Vector2 rightStPos(540.f, 240.f);
 const Vector2 leftStDir(1.f, 0.f);
 const Vector2 rightStDir(-1.f, 0.f);
 
+struct Bullet
+{
+	Bullet() : active(false) {}
+	Vector2 pos;
+	Vector2 dir;
+	bool active;
+};
+
 
 class Game
 {
@@ -55,6 +63,12 @@ public:
 private:
 	SDLWrapper * m_sdl;
 	SDL_Rect m_plAreas[2];
-	std::vector<std::pair<Vector2, Vector2>> m_bullets;
+	//at any moment every player can shoot only 1 bullet
+	Bullet m_bullets[2];
+	int m_score[2];
 	SDL_Texture * m_texBullet;
+
+	void checkForHit();
+	void remInactiveBullets();
+	bool checkForColision(const Vector2& lPos, const Vector2& rPos, const float lRad, const float rRad);
 };
