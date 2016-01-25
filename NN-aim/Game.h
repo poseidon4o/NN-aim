@@ -46,6 +46,8 @@ public:
 
 	void draw();
 	void move();
+	void reset();
+	void getScore(int& left, int& right);
 
 	//players are 0 and 1
 	void move(int player);

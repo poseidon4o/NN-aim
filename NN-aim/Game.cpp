@@ -43,6 +43,26 @@ bool Game::init(SDLWrapper * sdl)
 	return true;
 }
 
+void Game::getScore(int& left, int& right)
+{
+	left = m_score[0];
+	right = m_score[1];
+}
+
+void Game::reset()
+{
+	for (int i = 0; i < 2; ++i)
+		m_bullets[i].active = false;
+	for (int i = 0; i < 2; ++i)
+		m_players[i]->m_crnMargin = 0.1f;
+	m_players[0]->m_pos = leftStPos;
+	m_players[1]->m_pos = rightStPos;
+	m_players[0]->m_dir = leftStDir;
+	m_players[1]->m_dir = rightStDir;
+
+	
+}
+
 void Game::move()
 {
 	//this hack fix player fov and rotation
@@ -73,7 +93,6 @@ void Game::draw()
 	}
 	m_sdl->drawLine(Vector2(playerFieldWidth, 0.f), Vector2(playerFieldWidth, height), 0xff, 0xff, 0xff);
 	m_sdl->drawLine(Vector2(playerFieldWidth + bufferZoneSize, 0.f), Vector2(playerFieldWidth + bufferZoneSize, height), 0xff, 0xff, 0xff);
-
 	m_sdl->update();
 
 }
