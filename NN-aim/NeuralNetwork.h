@@ -37,6 +37,8 @@ private:
 	float sigmoid(float x) const;
 
 	static const int neuronsPerLayer = 5;
+	static const int layer1InputsPerNeuron = 4;
+	static const int layer2InputsPerNeuron = 5;
 
 	NeuronLayer m_firstLayer;
 	NeuronLayer m_secondLayer;
