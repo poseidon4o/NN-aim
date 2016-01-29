@@ -1,10 +1,14 @@
 #include <iostream>
 #include "Game.h"
+#include "NeuralNetwork.h"
 #include <ctime>
 
 
 int main(int argc, char * argv[])
 {
+	NeuralNetwork nets[2];
+	Move move;
+
 	SDLWrapper sdl(width, height);
 	if (!sdl.initSDL())
 	{
@@ -13,6 +17,8 @@ int main(int argc, char * argv[])
 
 	Game game;
 	game.init(&sdl);
+	srand(time(NULL));
+
 	while (!sdl.quit())
 	{
 		//call this methods every frame
@@ -20,24 +26,12 @@ int main(int argc, char * argv[])
 		sdl.checkForEvent();
 		game.move();
 		game.draw();
-		int move = 0;
-		srand(0);
 
 		//methods used to control players
 		for (int i = 0; i < 2; ++i)
 		{
-			move = rand() % 4;
-			switch (move)
-			{
-			case 0:
-				game.turnLeft(i); break;
-			case 1:
-				game.turnRight(i); break;
-			case 2:
-				game.move(i); break;
-			case 3:
-				game.shoot(i); break;
-			}
+			move = nets[i].calculateMove(game.playerInFov(i), game.bulletInFov(i), game.canShoot(i), game.currentFov(i));
+			game.makeMove(i, move);
 		}
 	}
 	return 0;

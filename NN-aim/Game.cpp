@@ -113,6 +113,20 @@ void Game::draw()
 }
 
 //players setters
+void Game::makeMove(const int player, const Move& mv)
+{
+	if(mv.advanceStraight)
+		move(player);
+	if (mv.shoot)
+		shoot(player);
+	if (mv.turnLeft)
+		turnLeft(player);
+	if (mv.turnRight)
+		turnRight(player);
+	changeFov(player, mv.fovMult);
+
+}
+
 void Game::move(int player)
 {
 	m_players[player]->move(playerSpeed, m_plAreas[player]);

@@ -9,7 +9,7 @@ struct Move
 	bool turnLeft;
 	bool turnRight;
 	bool shoot;
-	float newFov;
+	float fovMult;
 };
 
 struct Neuron
