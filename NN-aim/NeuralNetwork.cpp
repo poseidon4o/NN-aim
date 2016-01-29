@@ -31,9 +31,9 @@ NeuralNetwork::NeuralNetwork(): m_firstLayer(neuronsPerLayer, 4),
 
 }
 
-float NeuralNetwork::sigmoid(float x) const
+float NeuralNetwork::sigmoid(float activation) const
 {
-	return 1.f / (1.f + exp(x));
+	return 1.f / (1.f + exp((-activation / 1.f)));
 }
 
 Move NeuralNetwork::calculateMove(bool inFov, bool bulletInFov, bool alreadyFired, float fov)
