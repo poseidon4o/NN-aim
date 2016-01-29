@@ -72,7 +72,7 @@ void Game::drawScore()
 	}
 	for (int i = 0; i < m_score[1]; ++i)
 	{
-		const Vector2 pos(width - i * bulletRad * 2 + bulletRad, bulletRad);
+		const Vector2 pos(width - i * bulletRad * 2 - bulletRad, bulletRad);
 		m_sdl->drawTex(m_texBullet, pos);
 	}
 }
@@ -113,6 +113,20 @@ void Game::draw()
 }
 
 //players setters
+void Game::makeMove(const int player, const Move& mv)
+{
+	if(mv.advanceStraight)
+		move(player);
+	if (mv.shoot)
+		shoot(player);
+	if (mv.turnLeft)
+		turnLeft(player);
+	if (mv.turnRight)
+		turnRight(player);
+	changeFov(player, mv.fovMult);
+
+}
+
 void Game::move(int player)
 {
 	m_players[player]->move(playerSpeed, m_plAreas[player]);

@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "SDLWrapper.h"
 #include "utils.h"
+#include "NeuralNetwork.h"
 
 //some game constants
 const int width = 640;
@@ -50,6 +51,7 @@ public:
 	void getScore(int& left, int& right);
 
 	//players are 0 and 1
+	void makeMove(const int player, const Move& mv);
 	void move(int player);
 	void turnLeft(int player);
 	void turnRight(int player);

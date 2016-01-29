@@ -38,9 +38,15 @@ float NeuralNetwork::sigmoid(float activation) const
 
 Move NeuralNetwork::calculateMove(bool inFov, bool bulletInFov, bool alreadyFired, float fov)
 {
-	Move move;
+	Move move{0};
 
+	int res = rand();
 
+	move.advanceStraight = res % 2;
+	move.shoot = (res >> 1) % 2;
+	move.turnLeft = (res >> 2) % 2;
+	move.turnRight = (res >> 3) % 2;
+	move.fovMult = 1.f;
 
 	return move;
 }
