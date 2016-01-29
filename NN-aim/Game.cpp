@@ -72,7 +72,7 @@ void Game::drawScore()
 	}
 	for (int i = 0; i < m_score[1]; ++i)
 	{
-		const Vector2 pos(width - i * bulletRad * 2 + bulletRad, bulletRad);
+		const Vector2 pos(width - i * bulletRad * 2 - bulletRad, bulletRad);
 		m_sdl->drawTex(m_texBullet, pos);
 	}
 }
