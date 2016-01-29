@@ -5,8 +5,6 @@
 
 Neuron::Neuron(int inputs): m_inputs(inputs)
 {
-	srand(time(NULL));
-
 	float a = 0.f, b = 30.f;
 
 	for(int i = 0; i < m_inputs + 1; ++i) // plus 1 for the bias
