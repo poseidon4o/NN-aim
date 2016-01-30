@@ -1,7 +1,10 @@
 #include <iostream>
+#include <ctime>
+
+#include "GeneticAlgorithm.h"
 #include "Game.h"
 #include "NeuralNetwork.h"
-#include <ctime>
+
 
 const int gamesCnt = 25;
 
@@ -19,34 +22,56 @@ int main(int argc, char * argv[])
 		games[i].init(&sdl);
 	srand(time(NULL));
 
+	GeneticAlgorithm genAlgo(55);
+	auto nnVals = genAlgo.GetGeneration();
+
 	NeuralNetwork * nets[2];
 	for (int i = 0; i < 2; ++i)
-		nets[i] = new NeuralNetwork[gamesCnt];
-
+		nets[i] = new NeuralNetwork[gamesCnt / 2];
 
 	while (!sdl.quit())
 	{
-		SDL_Delay(5);
-		sdl.checkForEvent();
-		games[0].draw();
-		for (int i = 0; i < gamesCnt; ++i)
+		//set new NNs
+		for (int i = 0; i < 2; ++i)
 		{
-			for (int j = 0; j < 2; ++j)
+			for (int j = 0; j < gamesCnt / 2; ++j)
 			{
-				move = nets[j][i].calculateMove(games[i].playerInFov(j), games[i].bulletInFov(j), games[i].canShoot(j), games[i].currentFov(j));
-				games[i].makeMove(j, move);
-				games[i].move();
+				nets[i][j].setWeights(nnVals[i * gamesCnt / 2 + j].weights);
 			}
 		}
 
+		while (!sdl.quit() && !games[0].end())
+		{
+			SDL_Delay(5);
+			sdl.checkForEvent();
+			games[0].draw();
+			for (int i = 0; i < gamesCnt/2; ++i)
+			{
+				for (int j = 0; j < 2; ++j)
+				{
+					move = nets[j][i].calculateMove(games[i].playerInFov(j), games[i].bulletInFov(j), games[i].canShoot(j), games[i].currentFov(j));
+					games[i].makeMove(j, move);
+					games[i].move();
+				}
+			}
+		}
 
-		//if (games[0].end())
-		//	games[0].reset();
+		for (int i = 0; i < gamesCnt; ++i)
+		{
+			float left, right;
+			games[i].getNNRaitng(left, right);
+			games[i].reset();
+			genAlgo.SetChromosomeFitness(i * 2, left);
+			genAlgo.SetChromosomeFitness(i * 2 + 1, right);
+		}
 
+
+		genAlgo.NextGenetarion();
 	}
 
 
-
+	for (int i = 0; i < 2; ++i)
+		delete[] nets[i];
 	delete[] games;
 	return 0;
 }

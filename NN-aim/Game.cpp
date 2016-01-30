@@ -2,7 +2,7 @@
 
 Game::Game()
 {
-	m_score[0] = m_score[1] = 0;
+	m_score[0] = m_score[1] = m_frameCnt = 0;
 }
 
 Game::~Game()
@@ -45,13 +45,14 @@ bool Game::init(SDLWrapper * sdl)
 
 bool Game::end()
 {
-	return m_frameCnt > maxGameFrames || m_score[0] >= 3 || m_score[1] >= 3;
+	//TODO: uncomment
+	return m_frameCnt > maxGameFrames/* || m_score[0] >= 3 || m_score[1] >= 3*/;
 }
 
 void Game::getNNRaitng(float& left, float& right)
 {
-	left = (m_score[0] - m_score[1]) * (static_cast<float>(m_frameCnt) / maxGameFrames);
-	right = (m_score[1] - m_score[0]) * (static_cast<float>(m_frameCnt) / maxGameFrames);
+	left = (m_score[0] - m_score[1]) * (static_cast<float>(m_frameCnt) / maxGameFrames) * 10.f;
+	right = (m_score[1] - m_score[0]) * (static_cast<float>(m_frameCnt) / maxGameFrames) * 10.f;
 }
 
 void Game::reset()
