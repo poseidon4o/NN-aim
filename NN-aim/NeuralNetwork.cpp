@@ -14,6 +14,11 @@ Neuron::Neuron(int inputs): m_inputs(inputs + 1)
 	}
 }
 
+NeuronLayer::NeuronLayer()
+{
+	m_numNeurons = 0;
+}
+
 NeuronLayer::NeuronLayer(int numNeurons, int inputsPerNeuron)
 {
 	m_numNeurons = numNeurons;
@@ -23,10 +28,10 @@ NeuronLayer::NeuronLayer(int numNeurons, int inputsPerNeuron)
 	}
 }
 
-NeuralNetwork::NeuralNetwork(): m_layers{NeuronLayer(neuronsPerLayer, layer1InputsPerNeuron),
-	NeuronLayer(neuronsPerLayer, layer2InputsPerNeuron)}
+NeuralNetwork::NeuralNetwork()
 {
-
+	m_layers[0] = NeuronLayer(neuronsPerLayer, layer1InputsPerNeuron);
+	m_layers[1] = NeuronLayer(neuronsPerLayer, layer2InputsPerNeuron);
 }
 
 float NeuralNetwork::sigmoid(float activation) const

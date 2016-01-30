@@ -23,6 +23,7 @@ struct Neuron
 struct NeuronLayer
 {
 	NeuronLayer(int numNeurons, int inputsPerNeuron);
+	NeuronLayer();
 
 	int m_numNeurons;
 	std::vector<Neuron> m_neurons;
