@@ -33,12 +33,14 @@ public:
 	void NextGenetarion();
 
 private:
-	void MutateAtIndex(size_t index);
+	void Mutate(size_t index);
 	void Crossover(size_t parentIndex1, size_t parentIndex2, Chromosome& child1, Chromosome& child2);
 
 	std::vector<Chromosome> currentGeneration;
 
 	size_t chromosomeSize;
 };
+
+double generateGaussianNoise(double mu, double sigma);
 
 #endif
