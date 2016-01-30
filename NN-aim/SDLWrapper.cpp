@@ -28,7 +28,7 @@ bool SDLWrapper::initSDL()
 		return false;
 	}
 
-	m_render = SDL_CreateRenderer(m_window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	m_render = SDL_CreateRenderer(m_window, -1, SDL_RENDERER_ACCELERATED);
 	if (!m_render)
 	{
 		SDL_DestroyWindow(m_window);
