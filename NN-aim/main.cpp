@@ -3,39 +3,50 @@
 #include "NeuralNetwork.h"
 #include <ctime>
 
+const int gamesCnt = 25;
 
 int main(int argc, char * argv[])
 {
-	NeuralNetwork nets[2];
-	Move move;
-
-
 	SDLWrapper sdl(width, height);
 	if (!sdl.initSDL())
 	{
 		return -1;
 	}
+	Move move;
 
-	Game game;
-	game.init(&sdl);
+	Game * games = new Game[gamesCnt];
+	for (int i = 0; i < gamesCnt; ++i)
+		games[i].init(&sdl);
 	srand(time(NULL));
+
+	NeuralNetwork * nets[2];
+	for (int i = 0; i < 2; ++i)
+		nets[i] = new NeuralNetwork[gamesCnt];
+
 
 	while (!sdl.quit())
 	{
-		//call this methods every frame
-		SDL_Delay(1);
+		SDL_Delay(5);
 		sdl.checkForEvent();
-		game.move();
-		game.draw();
-		if (game.end())
-			game.reset();
-
-		//methods used to control players
-		for (int i = 0; i < 2; ++i)
+		games[0].draw();
+		for (int i = 0; i < gamesCnt; ++i)
 		{
-			move = nets[i].calculateMove(game.playerInFov(i), game.bulletInFov(i), game.canShoot(i), game.currentFov(i));
-			game.makeMove(i, move);
+			games[0].move();
+			for (int j = 0; j < 2; ++j)
+			{
+				move = nets[j][i].calculateMove(games[i].playerInFov(j), games[i].bulletInFov(j), games[i].canShoot(j), games[i].currentFov(j));
+				games[i].makeMove(j, move);
+			}
 		}
+
+
+		//if (games[0].end())
+		//	games[0].reset();
+
 	}
+
+
+
+	delete[] games;
 	return 0;
 }
