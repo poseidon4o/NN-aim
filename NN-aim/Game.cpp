@@ -51,8 +51,8 @@ bool Game::end()
 
 void Game::getNNRaitng(float& left, float& right)
 {
-	left = (m_score[0] - m_score[1]) * (static_cast<float>(m_frameCnt) / maxGameFrames) * 10.f;
-	right = (m_score[1] - m_score[0]) * (static_cast<float>(m_frameCnt) / maxGameFrames) * 10.f;
+	left = 5000.f + (m_score[0] - m_score[1]) * (static_cast<float>(m_frameCnt) / maxGameFrames) * 10.f;
+	right = 5000.f + (m_score[1] - m_score[0]) * (static_cast<float>(m_frameCnt) / maxGameFrames) * 10.f;
 }
 
 void Game::reset()
