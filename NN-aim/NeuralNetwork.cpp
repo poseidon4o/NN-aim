@@ -62,7 +62,14 @@ Move NeuralNetwork::calculateMove(bool inFov, bool bulletInFov, bool alreadyFire
 				activations[neuronIndex] += inputs[inputIndex] * neuron.m_weights[inputIndex];
 			}
 			activations[neuronIndex] += (-1.f) * neuron.m_weights[neuronInputs - 1]; //bias
-			activations[neuronIndex] = sigmoid(activations[neuronIndex]);
+			if(activations[neuronIndex] >= 0)
+			{
+				activations[neuronIndex] = sigmoid(activations[neuronIndex]);
+			}
+			else
+			{
+				activations[neuronIndex] = 0.f;
+			}
 			++neuronIndex;
 		}
 
