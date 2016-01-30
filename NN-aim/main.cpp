@@ -31,11 +31,11 @@ int main(int argc, char * argv[])
 		games[0].draw();
 		for (int i = 0; i < gamesCnt; ++i)
 		{
-			games[0].move();
 			for (int j = 0; j < 2; ++j)
 			{
 				move = nets[j][i].calculateMove(games[i].playerInFov(j), games[i].bulletInFov(j), games[i].canShoot(j), games[i].currentFov(j));
 				games[i].makeMove(j, move);
+				games[i].move();
 			}
 		}
 
