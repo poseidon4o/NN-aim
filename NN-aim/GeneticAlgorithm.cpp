@@ -82,7 +82,8 @@ size_t GeneticAlgorithm::Select() const
 		 partialSums[i] = partialSums[i - 1] + this->currentGeneration[i].fitness;
 	 }
 
-	 int x = rand();
+	 int x = rand() % static_cast<int>(partialSums[POPULATION_SIZE - 1]);
+
 	 int res = 0;
 
 	 for(int i = 0; i < POPULATION_SIZE && partialSums[i] < x; ++i)
