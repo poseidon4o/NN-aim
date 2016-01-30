@@ -8,12 +8,12 @@ file(GLOB SOURCES NN-aim/*.cpp)
 include_directories(NN-aim/include/SDL2)
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
 
-target_link_libraries(${PROJECT_NAME} SDL2)
 
 if(WIN32)
-	link_directories(NN-aim/lib/win32)
-	target_link_libraries(${PROJECT_NAME} SDL2main)
+	target_link_libraries(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/NN-aim/lib/win32/SDL2.lib)
+	target_link_libraries(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/NN-aim/lib/win32/SDL2main.lib)
 else()
+	target_link_libraries(${PROJECT_NAME} SDL2)
 	add_definitions(-std=c++11)
 endif()
 
