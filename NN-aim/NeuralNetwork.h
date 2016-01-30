@@ -33,15 +33,19 @@ class NeuralNetwork
 public:
 	NeuralNetwork();
 	Move calculateMove(bool inFov, bool bulletInFov, bool alreadyFired, float fov);
+	std::vector<float> getWeights() const;
+	void setWeights(const std::vector<float>& newWeights);
+	int weightsCount() const;
+
 private:
 	float sigmoid(float x) const;
 
 	static const int neuronsPerLayer = 5;
 	static const int layer1InputsPerNeuron = 4;
 	static const int layer2InputsPerNeuron = 5;
+	static const int layersCount = 2;
 
-	NeuronLayer m_firstLayer;
-	NeuronLayer m_secondLayer;
+	NeuronLayer m_layers[layersCount];
 };
 
 
