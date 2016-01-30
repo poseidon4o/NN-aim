@@ -47,6 +47,8 @@ private:
 	static const int layersCount = 2;
 
 	NeuronLayer m_layers[layersCount];
+
+	int m_weightsCount;
 };
 
 

@@ -1,13 +1,12 @@
 #include "NeuralNetwork.h"
 #include <cstdlib>
-#include <ctime>
 #include <cmath>
 
-Neuron::Neuron(int inputs): m_inputs(inputs + 1)
+Neuron::Neuron(int inputs): m_inputs(inputs + 1) // plus 1 for the bias
 {
 	float a = 0.f, b = 1.f;
 
-	for(int i = 0; i < m_inputs; ++i) // plus 1 for the bias
+	for(int i = 0; i < m_inputs; ++i)
 	{
 		float value = (b - a) * (static_cast<float>(rand()) / static_cast<float>(RAND_MAX)) + a;
 		m_weights.push_back(value);
@@ -28,10 +27,13 @@ NeuronLayer::NeuronLayer(int numNeurons, int inputsPerNeuron)
 	}
 }
 
-NeuralNetwork::NeuralNetwork()
+NeuralNetwork::NeuralNetwork(): m_weightsCount(0)
 {
 	m_layers[0] = NeuronLayer(neuronsPerLayer, layer1InputsPerNeuron);
 	m_layers[1] = NeuronLayer(neuronsPerLayer, layer2InputsPerNeuron);
+
+	m_weightsCount += m_layers[0].m_numNeurons * m_layers[0].m_neurons[0].m_inputs;
+	m_weightsCount += m_layers[1].m_numNeurons * m_layers[1].m_neurons[0].m_inputs;
 }
 
 float NeuralNetwork::sigmoid(float activation) const
@@ -47,18 +49,21 @@ Move NeuralNetwork::calculateMove(bool inFov, bool bulletInFov, bool alreadyFire
 								 static_cast<float>(alreadyFired), fov};
 	std::vector<float> activations(neuronsPerLayer);
 
-	for(int layerNum = 0; layerNum < layersCount; ++layerNum)
+	for(const auto& layer: m_layers)
 	{
+		int neuronIndex = 0;
 		std::fill(activations.begin(), activations.end(), 0.f);
-		for(int i = 0; i < m_layers[layerNum].m_numNeurons; ++i)
+
+		for(const auto& neuron: layer.m_neurons)
 		{
-			auto neuronInputs = m_layers[layerNum].m_neurons[i].m_inputs;
-			for(int j = 0; j < neuronInputs - 1; ++j)
+			auto neuronInputs = neuron.m_inputs;
+			for(int inputIndex = 0; inputIndex < neuronInputs - 1; ++inputIndex)
 			{
-				activations[i] += inputs[j] * m_layers[layerNum].m_neurons[i].m_weights[j];
+				activations[neuronIndex] += inputs[inputIndex] * neuron.m_weights[inputIndex];
 			}
-			activations[i] += (-1.f) * m_layers[layerNum].m_neurons[i].m_weights[neuronInputs - 1]; //bias
-			activations[i] = sigmoid(activations[i]);
+			activations[neuronIndex] += (-1.f) * neuron.m_weights[neuronInputs - 1]; //bias
+			activations[neuronIndex] = sigmoid(activations[neuronIndex]);
+			++neuronIndex;
 		}
 
 		inputs = activations;
@@ -69,30 +74,13 @@ Move NeuralNetwork::calculateMove(bool inFov, bool bulletInFov, bool alreadyFire
 	move.turnRight = static_cast<int>(activations[2] + 0.5f);
 	move.shoot = static_cast<int>(activations[3] + 0.5f);
 	move.fovMult = activations[4];
-	/*int res = rand();
-
-	move.advanceStraight = res % 2;
-	move.shoot = (res >> 1) % 2;
-	move.turnLeft = (res >> 2) % 2;
-	move.turnRight = (res >> 3) % 2;
-	move.fovMult = 1.f;*/
 
 	return move;
 }
 
 int NeuralNetwork::weightsCount() const
 {
-	int count = 0;
-
-	for(const auto& layer: m_layers)
-	{
-		for(const auto& neuron: layer.m_neurons)
-		{
-			count += neuron.m_inputs;
-		}
-	}
-
-	return count;
+	return m_weightsCount;
 }
 
 std::vector<float> NeuralNetwork::getWeights() const
