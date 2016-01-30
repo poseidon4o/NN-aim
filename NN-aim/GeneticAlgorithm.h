@@ -33,8 +33,9 @@ public:
 	void NextGenetarion();
 
 private:
+	size_t Select() const;
 	void Mutate(size_t index);
-	void Crossover(size_t parentIndex1, size_t parentIndex2, Chromosome& child1, Chromosome& child2);
+	void Crossover(size_t parentIndex1, size_t parentIndex2, Chromosome& child1, Chromosome& child2)const;
 
 	std::vector<Chromosome> currentGeneration;
 
