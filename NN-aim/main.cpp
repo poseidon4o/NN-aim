@@ -9,6 +9,7 @@ int main(int argc, char * argv[])
 	NeuralNetwork nets[2];
 	Move move;
 
+
 	SDLWrapper sdl(width, height);
 	if (!sdl.initSDL())
 	{
@@ -26,6 +27,8 @@ int main(int argc, char * argv[])
 		sdl.checkForEvent();
 		game.move();
 		game.draw();
+		if (game.end())
+			game.reset();
 
 		//methods used to control players
 		for (int i = 0; i < 2; ++i)

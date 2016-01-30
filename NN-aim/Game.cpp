@@ -43,10 +43,15 @@ bool Game::init(SDLWrapper * sdl)
 	return true;
 }
 
-void Game::getScore(int& left, int& right)
+bool Game::end()
 {
-	left = m_score[0];
-	right = m_score[1];
+	return m_frameCnt > maxGameFrames || m_score[0] >= 3 || m_score[1] >= 3;
+}
+
+void Game::getNNRaitng(float& left, float& right)
+{
+	left = (m_score[0] - m_score[1]) * (static_cast<float>(m_frameCnt) / maxGameFrames);
+	right = (m_score[1] - m_score[0]) * (static_cast<float>(m_frameCnt) / maxGameFrames);
 }
 
 void Game::reset()
@@ -60,7 +65,9 @@ void Game::reset()
 	m_players[0]->m_dir = leftStDir;
 	m_players[1]->m_dir = rightStDir;
 
-	
+	for (int i = 0; i < 2; ++i)
+		m_score[i] = 0;
+	m_frameCnt = 0;
 }
 
 void Game::drawScore()
@@ -93,6 +100,7 @@ void Game::move()
 	}
 	remInactiveBullets();
 	checkForHit();
+	m_frameCnt++;
 }
 
 void Game::draw()
@@ -150,7 +158,8 @@ void Game::turnRight(int player)
 
 void Game::changeFov(int player, float mult)
 {
-	m_players[player]->m_crnMargin *= mult;
+	//TODO: enable fov change
+	//m_players[player]->m_crnMargin *= mult;
 }
 
 void Game::shoot(int player)

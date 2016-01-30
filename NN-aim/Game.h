@@ -29,6 +29,9 @@ const Vector2 rightStPos(540.f, 240.f);
 const Vector2 leftStDir(1.f, 0.f);
 const Vector2 rightStDir(-1.f, 0.f);
 
+//game limit in frames
+const int maxGameFrames = 5000;
+
 struct Bullet
 {
 	Bullet() : active(false) {}
@@ -48,7 +51,8 @@ public:
 	void draw();
 	void move();
 	void reset();
-	void getScore(int& left, int& right);
+	void getNNRaitng(float& left, float& right);
+	bool end();
 
 	//players are 0 and 1
 	void makeMove(const int player, const Move& mv);
@@ -66,11 +70,12 @@ public:
 	Player * m_players[2];
 private:
 	SDLWrapper * m_sdl;
+	SDL_Texture * m_texBullet;
 	SDL_Rect m_plAreas[2];
 	//at any moment every player can shoot only 1 bullet
 	Bullet m_bullets[2];
-	int m_score[2];
-	SDL_Texture * m_texBullet;
+	int m_score[2];//game score
+	int m_frameCnt;
 
 	void checkForHit();
 	void remInactiveBullets();
