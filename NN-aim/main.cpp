@@ -8,6 +8,7 @@ int main(int argc, char * argv[])
 {
 	NeuralNetwork nets[2];
 	Move move;
+	const auto FPS = 60;
 
 
 	SDLWrapper sdl(width, height);
@@ -20,15 +21,19 @@ int main(int argc, char * argv[])
 	game.init(&sdl);
 	srand(time(NULL));
 
+	auto lastDraw = SDL_GetTicks();
+
 	while (!sdl.quit())
 	{
-		//call this methods every frame
-		SDL_Delay(1);
-		sdl.checkForEvent();
-		game.move();
-		game.draw();
-		if (game.end())
-			game.reset();
+		auto now = SDL_GetTicks();
+		if (now - lastDraw >= 1000 / FPS) {
+			//call this methods every frame
+			sdl.checkForEvent();
+			game.move();
+			game.draw();
+			if (game.end())
+				game.reset();
+		}
 
 		//methods used to control players
 		for (int i = 0; i < 2; ++i)
