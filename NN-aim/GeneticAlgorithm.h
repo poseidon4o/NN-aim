@@ -13,6 +13,8 @@ struct Chromosome
 	float fitness;
 
 	Chromosome(){fitness = 0.f;};
+
+	bool operator < (const Chromosome& other) const;
 };
 
 
@@ -26,11 +28,17 @@ public:
 
 	~GeneticAlgorithm(){};
 
-	std::vector<Chromosome>& GetGeneration()const;
+	std::vector<Chromosome> GetGeneration() const;
+	void SetChromosomeFitness(size_t chromosomeIndex, float fitness);
 	void NextGenetarion();
 
 private:
+	void MutateAtIndex(size_t index);
+	void Crossover(size_t parentIndex1, size_t parentIndex2, Chromosome& child1, Chromosome& child2);
+
 	std::vector<Chromosome> currentGeneration;
+
+	size_t chromosomeSize;
 };
 
 #endif
