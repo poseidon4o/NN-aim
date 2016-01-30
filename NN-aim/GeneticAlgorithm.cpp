@@ -49,6 +49,11 @@ void GeneticAlgorithm::NextGenetarion()
 
 	std::vector<Chromosome> newGeneration(POPULATION_SIZE);
 
+	for(size_t i = 0; i < POPULATION_SIZE; ++i)
+	{
+		newGeneration[i].weights.resize(this->chromosomeSize);
+	}
+
 	for(size_t i = 0; i < POPULATION_SIZE; i += 2)
 	{
 		this->Crossover(this->Select(), this->Select(), newGeneration[i], newGeneration[i+1]);
@@ -112,19 +117,24 @@ void GeneticAlgorithm::Crossover(size_t parentIndex1, size_t parentIndex2,
 		crosspoint2 = rand() % (this->chromosomeSize);
 	}while(crosspoint1 == crosspoint2);
 
-	for(size_t  i  = 0; i < crosspoint1; ++i)
+	if(crosspoint1 > crosspoint2)
+	{
+		std::swap(crosspoint1, crosspoint2);
+	}
+
+	for(size_t i = 0; i < crosspoint1; ++i)
 	{
 		child1.weights[i] = this->currentGeneration[parentIndex1].weights[i];
 		child2.weights[i] = this->currentGeneration[parentIndex2].weights[i];
 	}
 
-	for(size_t  i  = crosspoint1; i < crosspoint2; ++i)
+	for(size_t i = crosspoint1; i < crosspoint2; ++i)
 	{
 		child1.weights[i] = this->currentGeneration[parentIndex2].weights[i];
 		child2.weights[i] = this->currentGeneration[parentIndex1].weights[i];
 	}
 
-	for(size_t  i  = crosspoint2; i < this->chromosomeSize; ++i)
+	for(size_t i = crosspoint2; i < this->chromosomeSize; ++i)
 	{
 		child1.weights[i] = this->currentGeneration[parentIndex1].weights[i];
 		child2.weights[i] = this->currentGeneration[parentIndex2].weights[i];
