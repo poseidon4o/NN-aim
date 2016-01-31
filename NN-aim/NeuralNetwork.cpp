@@ -1,6 +1,7 @@
 #include "NeuralNetwork.h"
 #include <cstdlib>
 #include <cmath>
+#include <limits>
 
 Neuron::Neuron(int inputs): m_inputs(inputs + 1) // plus 1 for the bias
 {
@@ -47,6 +48,10 @@ Move NeuralNetwork::calculateMove(bool inFov, bool bulletInFov, bool alreadyFire
 
 	std::vector<float> inputs = {static_cast<float>(inFov), static_cast<float>(bulletInFov),
 								 static_cast<float>(alreadyFired), fov};
+	for(auto i = 0; i < inputs.size() - 1; ++i)
+	{
+		inputs[i] = inputs[i] ? std::numeric_limits<float>::max() : std::numeric_limits<float>::min();
+	}
 
 	std::vector<float> activations(neuronsPerLayer);
 
