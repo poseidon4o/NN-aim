@@ -4,7 +4,7 @@
 
 Neuron::Neuron(int inputs): m_inputs(inputs + 1) // plus 1 for the bias
 {
-	float a = 0.f, b = 1.f;
+	float a = -1.f, b = 1.f;
 
 	for(int i = 0; i < m_inputs; ++i)
 	{
@@ -47,6 +47,7 @@ Move NeuralNetwork::calculateMove(bool inFov, bool bulletInFov, bool alreadyFire
 
 	std::vector<float> inputs = {static_cast<float>(inFov), static_cast<float>(bulletInFov),
 								 static_cast<float>(alreadyFired), fov};
+
 	std::vector<float> activations(neuronsPerLayer);
 
 	for(const auto& layer: m_layers)
@@ -62,17 +63,10 @@ Move NeuralNetwork::calculateMove(bool inFov, bool bulletInFov, bool alreadyFire
 				activations[neuronIndex] += inputs[inputIndex] * neuron.m_weights[inputIndex];
 			}
 			activations[neuronIndex] += (-1.f) * neuron.m_weights[neuronInputs - 1]; //bias
-			if(activations[neuronIndex] >= 0)
-			{
-				activations[neuronIndex] = sigmoid(activations[neuronIndex]);
-			}
-			else
-			{
-				activations[neuronIndex] = 0.f;
-			}
+
+			activations[neuronIndex] = sigmoid(activations[neuronIndex]);
 			++neuronIndex;
 		}
-
 		inputs = activations;
 	}
 
