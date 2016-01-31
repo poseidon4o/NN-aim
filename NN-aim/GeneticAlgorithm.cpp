@@ -5,6 +5,8 @@
 #include <limits>
 #include <algorithm>
 
+const float mu = 0.3;
+const float sigma = 0.6;
 
 bool Chromosome::operator < (const Chromosome& other) const
 {
@@ -21,13 +23,15 @@ GeneticAlgorithm::GeneticAlgorithm(size_t chromosomeSize)
 	for(size_t i = 0; i < POPULATION_SIZE; ++i)
 	{
 		this->currentGeneration[i].weights = std::vector<float>(this->chromosomeSize);
-		float a = 0.f, b = 1.f;
+		float a = -1.f, b = 1.f;
 		for(size_t j = 0; j < chromosomeSize; ++j)
 		{
 			this->currentGeneration[i].weights[j] =
 					(b - a) * (static_cast<float>(rand()) / static_cast<float>(RAND_MAX)) + a;
 		}
 	}
+
+	this->generationNumber = 1;
 }
 
 
@@ -68,6 +72,7 @@ void GeneticAlgorithm::NextGenetarion()
 		this->Mutate(rand() % POPULATION_SIZE);
 	}
 
+	++(this->generationNumber);
 }
 
 
@@ -99,10 +104,13 @@ void GeneticAlgorithm::Mutate(size_t index)
 {
 	size_t numPositionsToMutate = rand() % 10, currentPosition;
 
+	//float currentSigma = sigma - (0.005 * this->generationNumber);
+	//float currentMu = fabs(mu - (0.0001 * this->generationNumber));
+
 	for(size_t i = 0; i < numPositionsToMutate; ++i)
 	{
 		currentPosition = rand() % (this->chromosomeSize);
-		this->currentGeneration[index].weights[currentPosition] += generateGaussianNoise(0.1, 0.2);
+		this->currentGeneration[index].weights[currentPosition] += generateGaussianNoise(mu, sigma);
 	}
 }
 

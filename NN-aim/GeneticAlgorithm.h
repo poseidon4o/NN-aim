@@ -40,6 +40,7 @@ private:
 	std::vector<Chromosome> currentGeneration;
 
 	size_t chromosomeSize;
+	size_t generationNumber;
 };
 
 double generateGaussianNoise(double mu, double sigma);
