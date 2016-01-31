@@ -15,7 +15,7 @@ const int playerFieldWidth = (width - bufferZoneSize) / 2;
 const float playerRad = 25.f;
 const float playerEyeRad = 5.f;
 const float bulletRad = 5.f;
-const float fovLen = 8.f;
+const float fovLen = 11.f;
 
 //max speed
 //offset = speed * dir
