@@ -1,12 +1,18 @@
 #include <iostream>
 #include <ctime>
+#include <algorithm>
 
 #include "GeneticAlgorithm.h"
 #include "Game.h"
 #include "NeuralNetwork.h"
 
 
-const int gamesCnt = 25;
+void dumpChrom(const GeneticAlgorithm& genAlgo)
+{
+
+}
+
+const int gamesCnt = 500;
 
 int main(int argc, char * argv[])
 {
@@ -31,40 +37,44 @@ int main(int argc, char * argv[])
 
 	while (!sdl.quit())
 	{
-		//set new NNs
+
 		for (int i = 0; i < 2; ++i)
 		{
-			for (int j = 0; j < gamesCnt / 2; ++j)
+			std::random_shuffle(nnVals.begin(), nnVals.end());
+			//set new NNs
+			for (int i = 0; i < 2; ++i)
 			{
-				nets[i][j].setWeights(nnVals[i * gamesCnt / 2 + j].weights);
-			}
-		}
-
-		while (!sdl.quit() && !games[0].end())
-		{
-			SDL_Delay(5);
-			sdl.checkForEvent();
-			games[0].draw();
-			for (int i = 0; i < gamesCnt/2; ++i)
-			{
-				for (int j = 0; j < 2; ++j)
+				for (int j = 0; j < gamesCnt / 2; ++j)
 				{
-					move = nets[j][i].calculateMove(games[i].playerInFov(j), games[i].bulletInFov(j), games[i].canShoot(j), games[i].currentFov(j));
-					games[i].makeMove(j, move);
-					games[i].move();
+					nets[i][j].setWeights(nnVals[i * gamesCnt / 2 + j].weights);
 				}
 			}
-		}
 
-		for (int i = 0; i < gamesCnt; ++i)
-		{
-			float left, right;
-			games[i].getNNRaitng(left, right);
-			games[i].reset();
-			genAlgo.SetChromosomeFitness(i * 2, left);
-			genAlgo.SetChromosomeFitness(i * 2 + 1, right);
-		}
+			while (!sdl.quit() && !games[0].end())
+			{
+				SDL_Delay(1);
+				sdl.checkForEvent();
+				games[0].draw();
+				for (int i = 0; i < gamesCnt / 2; ++i)
+				{
+					for (int j = 0; j < 2; ++j)
+					{
+						move = nets[j][i].calculateMove(games[i].playerInFov(j), games[i].bulletInFov(j), games[i].canShoot(j), games[i].currentFov(j));
+						games[i].makeMove(j, move);
+						games[i].move();
+					}
+				}
+			}
 
+			for (int i = 0; i < gamesCnt; ++i)
+			{
+				float left, right;
+				games[i].getNNRaitng(left, right);
+				games[i].reset();
+				genAlgo.SetChromosomeFitness(i * 2, left);
+				genAlgo.SetChromosomeFitness(i * 2 + 1, right);
+			}
+		}
 
 		genAlgo.NextGenetarion();
 	}

@@ -1,7 +1,7 @@
 #ifndef GENETIC_ALGORITHM_H
 #define GENETIC_ALGORITHM_H
 
-#define POPULATION_SIZE 50
+#define POPULATION_SIZE 1000
 
 #include <vector>
 #include <cstdlib>

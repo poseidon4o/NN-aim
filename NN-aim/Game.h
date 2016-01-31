@@ -76,6 +76,7 @@ private:
 	Bullet m_bullets[2];
 	int m_score[2];//game score
 	int m_frameCnt;
+	int m_bulletsCnt[2];
 
 	void checkForHit();
 	void remInactiveBullets();

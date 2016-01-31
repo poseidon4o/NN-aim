@@ -2,7 +2,7 @@
 
 Game::Game()
 {
-	m_score[0] = m_score[1] = m_frameCnt = 0;
+	m_score[0] = m_score[1] = m_frameCnt = m_bulletsCnt[0] = m_bulletsCnt[1] = 0;
 }
 
 Game::~Game()
@@ -51,8 +51,23 @@ bool Game::end()
 
 void Game::getNNRaitng(float& left, float& right)
 {
-	left = 5000.f + (m_score[0] - m_score[1]) * (static_cast<float>(m_frameCnt) / maxGameFrames) * 10.f;
-	right = 5000.f + (m_score[1] - m_score[0]) * (static_cast<float>(m_frameCnt) / maxGameFrames) * 10.f;
+	left = 1000.f + m_score[0] * 50.f - m_score[1] * 25.f - m_bulletsCnt[0];
+	right = 1000.f + m_score[1] * 50.f - m_score[0] * 25.f - m_bulletsCnt[1];
+	if (m_score[0] > m_score[1])
+	{
+		left += 300.f;
+		right += -100.f;
+	}
+	else if (m_score[0] == m_score[1])
+	{
+		left += 50.f;
+		right += 50.f;
+	}
+	else
+	{
+		left += -100.f;
+		right += 300.f;
+	}
 }
 
 void Game::reset()
@@ -68,6 +83,9 @@ void Game::reset()
 
 	for (int i = 0; i < 2; ++i)
 		m_score[i] = 0;
+	for (int i = 0; i < 2; ++i)
+		m_bulletsCnt[i] = 0;
+
 	m_frameCnt = 0;
 }
 
@@ -170,6 +188,7 @@ void Game::shoot(int player)
 		m_bullets[player].pos = m_players[player]->m_pos;
 		m_bullets[player].dir = m_players[player]->m_dir;
 		m_bullets[player].active = true;
+		m_bulletsCnt[player]++;
 	}
 }
 
