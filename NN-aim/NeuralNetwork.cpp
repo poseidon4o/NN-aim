@@ -50,7 +50,7 @@ Move NeuralNetwork::calculateMove(bool inFov, bool bulletInFov, bool alreadyFire
 								 static_cast<float>(alreadyFired), fov};
 	for(auto i = 0; i < inputs.size() - 1; ++i)
 	{
-		inputs[i] = inputs[i] ? std::numeric_limits<float>::max() : std::numeric_limits<float>::min();
+		inputs[i] = inputs[i] ? std::numeric_limits<float>::max() : std::numeric_limits<float>::lowest();
 	}
 
 	std::vector<float> activations(neuronsPerLayer);
