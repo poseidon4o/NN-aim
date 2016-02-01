@@ -1,4 +1,5 @@
 #include "Game.h"
+#include "RandomGenerator.h"
 
 Game::Game()
 {
@@ -16,6 +17,9 @@ bool Game::init(SDLWrapper * sdl)
 	m_sdl = sdl;
 
 	//init rectangles
+
+	auto & gen = RandomGen::getInstance();
+
 	m_plAreas[0].x = 0;
 	m_plAreas[1].x = width - playerFieldWidth;
 	m_plAreas[0].y = m_plAreas[1].y = 0;
@@ -39,6 +43,9 @@ bool Game::init(SDLWrapper * sdl)
 	//init players
 	m_players[0] = new Player(texPlayer1, texEye, leftStPos, leftStDir, fovLen, fovMargin);
 	m_players[1] = new Player(texPlayer2, texEye, rightStPos, rightStDir, fovLen, fovMargin);
+
+	m_players[0]->m_dir.rotate(gen.uniformDouble(0., 2.0 * M_PI));
+	m_players[1]->m_dir.rotate(gen.uniformDouble(0., 2.0 * M_PI));
 
 	return true;
 }
@@ -159,18 +166,12 @@ void Game::move(int player)
 
 void Game::turnLeft(int player)
 {
-	const float x = m_players[player]->m_dir.x;
-	const float y = m_players[player]->m_dir.y;
-	m_players[player]->m_dir.x = x * cos(rotStep) - y * sin(rotStep);
-	m_players[player]->m_dir.y = x * sin(rotStep) + y * cos(rotStep);
+	m_players[player]->m_dir.rotate(rotStep);
 }
 
 void Game::turnRight(int player)
 {
-	const float x = m_players[player]->m_dir.x;
-	const float y = m_players[player]->m_dir.y;
-	m_players[player]->m_dir.x = x * cos(-rotStep) - y * sin(-rotStep);
-	m_players[player]->m_dir.y = x * sin(-rotStep) + y * cos(-rotStep);
+	m_players[player]->m_dir.rotate(-rotStep);
 }
 
 void Game::changeFov(int player, float mult)
