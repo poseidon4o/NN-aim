@@ -57,7 +57,7 @@ int main(int argc, char * argv[])
 		nets[i] = new NeuralNetwork[gamesCnt];
 
 	int iteration = 0;
-	char iterChar[16];
+	char iterChar[64];
 
 	while (!sdl.quit())
 	{
@@ -74,7 +74,7 @@ int main(int argc, char * argv[])
 		while (!sdl.quit() && !games[0].end())
 		{
 			SDL_Delay(5);
-			_itoa_s(iteration, iterChar, 10);
+			sprintf(iterChar, "NN-Aim :) Iter: %d", iteration);
 			sdl.setWinTitle(iterChar);
 			sdl.checkForEvent();
 			games[0].draw();
