@@ -89,7 +89,7 @@ Move NeuralNetwork::calculateMove(bool inFov, bool bulletInFov, bool alreadyFire
 	move.turnLeft = static_cast<int>(activations[1] + 0.5f);
 	move.turnRight = static_cast<int>(activations[2] + 0.5f);
 	move.shoot = static_cast<int>(activations[3] + 0.5f);
-	move.fovMult = activations[4];
+	move.fovMult = activations[4] + 0.5f;
 
 	return move;
 }
