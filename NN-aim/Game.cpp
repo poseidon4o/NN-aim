@@ -45,27 +45,26 @@ bool Game::init(SDLWrapper * sdl)
 
 bool Game::end()
 {
-	//TODO: uncomment
-	return m_frameCnt > maxGameFrames/* || m_score[0] >= 3 || m_score[1] >= 3*/;
+	return m_frameCnt > maxGameFrames;
 }
 
 void Game::getNNRating(int& left, int& right)
 {
-	left = 0;// = m_score[0] * 50 - m_score[1] * 35;
-	right = 0; // m_score[1] * 50 - m_score[0] * 35;
+	left = 10;// + m_score[0] - m_score[1];
+	right = 10;// + m_score[1] - m_score[0];
 	if (m_score[0] > m_score[1])
-		left += 300;
+		left += 60;
 	else if (m_score[0] == m_score[1])
 	{
-		left += 100;
-		right += 100;
+		left += 20;
+		right += 20;
 	}
 	else
-		right += 300;
-	//if (left < 0)
-	//	left = 0;
-	//if (right < 0)
-	//	right = 0;
+		right += 60;
+	if (left <= 0)
+		left = 1;
+	if (right <= 0)
+		right = 1;
 }
 
 void Game::reset()
@@ -175,8 +174,7 @@ void Game::turnRight(int player)
 
 void Game::changeFov(int player, float mult)
 {
-	//TODO: enable fov change
-	//m_players[player]->m_crnMargin *= mult;
+	m_players[player]->m_crnMargin *= mult;
 }
 
 void Game::shoot(int player)

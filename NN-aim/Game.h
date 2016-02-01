@@ -31,7 +31,7 @@ const Vector2 leftStDir(1.f, 0.f);
 const Vector2 rightStDir(-1.f, 0.f);
 
 //game limit in frames
-const int maxGameFrames = 1000;
+const int maxGameFrames = 2500;
 
 struct Bullet
 {

@@ -6,8 +6,6 @@ void Player::draw(SDLWrapper * sdl)
 {
 	sdl->drawLine(m_pos, m_leftAim, 0, 0xff, 0xff);
 	sdl->drawLine(m_pos, m_rightAim, 0, 0xff, 0xff);
-	//TODO: remove next line (its just for test)
-	sdl->drawLine(m_leftAim, m_rightAim, 0xff, 0, 0);
 
 	sdl->drawTex(m_body, m_pos);
 	sdl->drawTex(m_eye, m_pos + m_dir * static_cast<float>(m_size));
