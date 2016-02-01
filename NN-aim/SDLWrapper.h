@@ -3,6 +3,8 @@
 #include "Vec2.h"
 #include <vector>
 
+const char winName[] = "NN-aim   Iteration:";
+
 class SDLWrapper
 {
 public:
@@ -23,6 +25,7 @@ public:
 	void checkForEvent();
 
 	void update() { SDL_RenderPresent(m_render); }
+	void setWinTitle(const char * title) { SDL_SetWindowTitle(m_window, title); }
 	void clear() { SDL_SetRenderDrawColor(m_render, 0, 0, 0, 0); SDL_RenderClear(m_render); }
 
 	void drawLine(const Vector2& from, const Vector2& to, const char red, const char green, const char blue);

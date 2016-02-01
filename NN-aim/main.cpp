@@ -7,6 +7,7 @@
 #include "NeuralNetwork.h"
 #include "RandomGenerator.h"
 
+
 const int gamesCnt = POPULATION_SIZE / 2;
 
 inline void setFitness(Game * games, GeneticAlgorithm& genAlgo)
@@ -55,6 +56,9 @@ int main(int argc, char * argv[])
 	for (int i = 0; i < 2; ++i)
 		nets[i] = new NeuralNetwork[gamesCnt];
 
+	int iteration = 0;
+	char iterChar[16];
+
 	while (!sdl.quit())
 	{
 
@@ -70,12 +74,15 @@ int main(int argc, char * argv[])
 		while (!sdl.quit() && !games[0].end())
 		{
 			SDL_Delay(5);
+			_itoa_s(iteration, iterChar, 10);
+			sdl.setWinTitle(iterChar);
 			sdl.checkForEvent();
 			games[0].draw();
 			makeMove(games, nets);
 		}
 		setFitness(games, genAlgo);
 		genAlgo.NextGenetarion();
+		iteration++;
 	}
 
 	RandomGen::getInstance().gaussian(1, 1);

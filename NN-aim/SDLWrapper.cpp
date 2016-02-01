@@ -20,7 +20,7 @@ bool SDLWrapper::initSDL()
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
 		return false;
 
-	m_window = SDL_CreateWindow("NN-aim", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+	m_window = SDL_CreateWindow(winName, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
 		m_width, m_height, SDL_WINDOW_SHOWN);
 	if (!m_window)
 	{
