@@ -1,7 +1,6 @@
 #include <iostream>
 #include <ctime>
 #include <algorithm>
-#include <thread>
 
 #include "GeneticAlgorithm.h"
 #include "Game.h"
@@ -37,8 +36,7 @@ inline void makeMove(Game * games, NeuralNetwork * nets[2])
 	}
 }
 
-inline void runRound(Game * games, GeneticAlgorithm& genAlgo, NeuralNetwork * nets[2],
-	SDLWrapper& sdl, bool display, bool shuffle = true)
+inline void runRound(Game * games, GeneticAlgorithm& genAlgo, NeuralNetwork * nets[2], SDLWrapper& sdl, bool display, bool shuffle = true)
 {
 	auto& nnVals = genAlgo.GetGeneration();
 	if(shuffle)
@@ -61,21 +59,12 @@ inline void runRound(Game * games, GeneticAlgorithm& genAlgo, NeuralNetwork * ne
 		sdl.checkForEvent();
 		if (display)
 		{
-			SDL_Delay(1);
+			SDL_Delay(5);
 			games[0].draw();
 		}
 		makeMove(games, nets);
 	}
 	setFitness(games, genAlgo);
-}
-
-void runRounds(int iterCnt, Game * games, GeneticAlgorithm& genAlgo, NeuralNetwork * nets[2],
-	SDLWrapper& sdl, bool display, bool shuffle)
-{
-	for (int i = 0; i < iterCnt; ++i)
-	{
-		runRound(games, genAlgo, nets, sdl, display, shuffle);
-	}
 }
 
 int main(int argc, char * argv[])
@@ -86,38 +75,34 @@ int main(int argc, char * argv[])
 		return -1;
 	}
 
-	GeneticAlgorithm genAlgo(NeuralNetwork().weightsCount());
-	auto& nnVals = genAlgo.GetGeneration();
-
 	Game * games = new Game[gamesCnt];
 	for (int i = 0; i < gamesCnt; ++i)
 		games[i].init(&sdl);
+	//RandomGen::explicitSeed(time(NULL));
 
-	Game dispGame;
+	GeneticAlgorithm genAlgo(55);
+	auto& nnVals = genAlgo.GetGeneration();
 
 	NeuralNetwork * nets[2];
 	for (int i = 0; i < 2; ++i)
 		nets[i] = new NeuralNetwork[gamesCnt];
-	NeuralNetwork dispNN;
 
 	int iteration = 0;
 	char iterChar[64];
 
 	while (!sdl.quit())
 	{
-		std::thread worker(runRounds,1,  games, std::ref(genAlgo), nets, std::ref(sdl), false, true);
 		sprintf(iterChar, "NN-Aim :) Iter: %d", iteration);
 		sdl.setWinTitle(iterChar);
 
-		//for (int i = 0; i < 10; ++i)
-		//{
-		//	runRound(games, genAlgo, nets, sdl, false);
-		//}
+		for (int i = 0; i < 10; ++i)
+		{
+			runRound(games, genAlgo, nets, sdl, false);
+		}
 		runRound(games, genAlgo, nets, sdl, true, false);
 
 		genAlgo.NextGenetarion();
 		iteration++;
-		worker.join();
 	}
 
 	RandomGen::getInstance().gaussian(1, 1);
