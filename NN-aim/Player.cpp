@@ -36,8 +36,6 @@ bool Player::isInFov(const Vector2& pos, float radius)
 {
 	Vector2 tri[3] = {m_pos, m_leftAim, m_rightAim};
 	bool res = intersectCircleTriangle(pos,radius, tri);
-	if (res)
-		m_dir *= -1;
 	return res;
 }
 
