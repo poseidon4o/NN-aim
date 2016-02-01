@@ -59,7 +59,7 @@ inline void runRound(Game * games, GeneticAlgorithm& genAlgo, NeuralNetwork * ne
 		sdl.checkForEvent();
 		if (display)
 		{
-			SDL_Delay(5);
+			//SDL_Delay(5);
 			games[0].draw();
 		}
 		makeMove(games, nets);
@@ -97,7 +97,7 @@ int main(int argc, char * argv[])
 
 		for (int i = 0; i < 10; ++i)
 		{
-			runRound(games, genAlgo, nets, sdl, false);
+			runRound(games, genAlgo, nets, sdl, true);
 		}
 		runRound(games, genAlgo, nets, sdl, true, false);
 
