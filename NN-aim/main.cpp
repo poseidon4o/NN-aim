@@ -78,7 +78,7 @@ int main(int argc, char * argv[])
 		genAlgo.NextGenetarion();
 	}
 
-
+	RandomGen::getInstance().gaussian(1, 1);
 	for (int i = 0; i < 2; ++i)
 		delete[] nets[i];
 	delete[] games;

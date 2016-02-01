@@ -15,6 +15,7 @@ public:
 
 	double gaussian(double mean, double deviation);
 	double uniformDouble(double low = 0., double high = 1.);
+	int intInRange(int min, int max);
 
 
 	RandomGen(const RandomGen &) = delete;
