@@ -47,6 +47,13 @@ bool Game::init(SDLWrapper * sdl)
 	m_players[0]->m_dir.rotate(gen.uniformDouble(0., 2.0 * M_PI));
 	m_players[1]->m_dir.rotate(gen.uniformDouble(0., 2.0 * M_PI));
 
+	m_players[0]->m_pos.x += gen.intInRange(-leftStPos.x, leftStPos.x);
+	m_players[0]->m_pos.y += gen.intInRange(-leftStPos.y, leftStPos.y);
+
+	m_players[1]->m_pos.x += gen.intInRange(leftStPos.x, leftStPos.x);
+	m_players[1]->m_pos.y += gen.intInRange(-leftStPos.y, leftStPos.y);
+
+
 	return true;
 }
 
@@ -85,6 +92,17 @@ void Game::reset()
 	m_players[1]->m_pos = rightStPos;
 	m_players[0]->m_dir = leftStDir;
 	m_players[1]->m_dir = rightStDir;
+
+	auto & gen = RandomGen::getInstance();
+
+	m_players[0]->m_pos.x += gen.intInRange(-leftStPos.x, leftStPos.x);
+	m_players[0]->m_pos.y += gen.intInRange(-leftStPos.y, leftStPos.y);
+
+	m_players[1]->m_pos.x += gen.intInRange(leftStPos.x, leftStPos.x);
+	m_players[1]->m_pos.y += gen.intInRange(-leftStPos.y, leftStPos.y);
+
+	m_players[0]->m_dir.rotate(gen.uniformDouble(0., 2.0 * M_PI));
+	m_players[1]->m_dir.rotate(gen.uniformDouble(0., 2.0 * M_PI));
 
 	for (int i = 0; i < 2; ++i)
 		m_score[i] = 0;
