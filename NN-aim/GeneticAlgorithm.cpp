@@ -1,13 +1,15 @@
 #include "GeneticAlgorithm.h"
+#include "RandomGenerator.h"
 
 #include <cmath>
 #include <random>
 #include <limits>
 #include <algorithm>
 
-const float mu = 0.3;
-const float sigma = 0.6;
+const float mu = 0.1;
+const float sigma = 0.2;
 const int maxMutations = 1;
+const float acceptableDif = 0.3;
 
 bool Chromosome::operator < (const Chromosome& other) const
 {
@@ -20,15 +22,15 @@ GeneticAlgorithm::GeneticAlgorithm(size_t chromosomeSize)
 	this->chromosomeSize = chromosomeSize;
 
 	this->currentGeneration.resize(POPULATION_SIZE);
+	this->partialSums.resize(POPULATION_SIZE);
 
 	for(size_t i = 0; i < POPULATION_SIZE; ++i)
 	{
 		this->currentGeneration[i].weights = std::vector<float>(this->chromosomeSize);
-		float a = -1.f, b = 1.f;
+
 		for(size_t j = 0; j < chromosomeSize; ++j)
 		{
-			this->currentGeneration[i].weights[j] =
-					(b - a) * (static_cast<float>(rand()) / static_cast<float>(RAND_MAX)) + a;
+			this->currentGeneration[i].weights[j] =  RandomGen::getInstance().gaussian(1, 1);
 		}
 	}
 
@@ -36,7 +38,7 @@ GeneticAlgorithm::GeneticAlgorithm(size_t chromosomeSize)
 }
 
 
-std::vector<Chromosome> GeneticAlgorithm::GetGeneration() const
+std::vector<Chromosome>& GeneticAlgorithm::GetGeneration()
 {
 	return this->currentGeneration;
 }
@@ -52,6 +54,13 @@ void GeneticAlgorithm::NextGenetarion()
 {
 	sort(this->currentGeneration.begin(), this->currentGeneration.end());
 
+	this->partialSums[0] = this->currentGeneration[0].fitness;
+
+	for (size_t i = 1; i < POPULATION_SIZE; ++i)
+	{
+		 this->partialSums[i] = this->partialSums[i - 1] + this->currentGeneration[i].fitness;
+	}
+
 	std::vector<Chromosome> newGeneration(POPULATION_SIZE);
 
 	for(size_t i = 0; i < POPULATION_SIZE; ++i)
@@ -59,18 +68,18 @@ void GeneticAlgorithm::NextGenetarion()
 		newGeneration[i].weights.resize(this->chromosomeSize);
 	}
 
-	for(size_t i = 0; i < POPULATION_SIZE; ++i)
+	for(size_t i = 0; i < POPULATION_SIZE; i += 2)
 	{
-		this->Crossover(this->Select(), this->Select(), newGeneration[i]);
+		this->Crossover(this->Select(), this->Select(), newGeneration[i], newGeneration[i + 1]);
 	}
 
 	this->currentGeneration = newGeneration;
 
-	size_t numChromosomesToMutate = rand() % maxMutations;
+	size_t numChromosomesToMutate = RandomGen::getInstance().intInRange(0, POPULATION_SIZE); //rand() % maxMutations;
 
 	for(size_t i = 0; i < numChromosomesToMutate; ++i)
 	{
-		this->Mutate(rand() % POPULATION_SIZE);
+		this->Mutate(RandomGen::getInstance().intInRange(0, POPULATION_SIZE - 1));
 	}
 
 	++(this->generationNumber);
@@ -79,20 +88,11 @@ void GeneticAlgorithm::NextGenetarion()
 
 size_t GeneticAlgorithm::Select() const
 {
-	 std::vector<float> partialSums(POPULATION_SIZE);
-
-	 partialSums[0] = this->currentGeneration[0].fitness;
-
-	 for (size_t i = 1; i < POPULATION_SIZE; ++i)
-	 {
-		 partialSums[i] = partialSums[i - 1] + this->currentGeneration[i].fitness;
-	 }
-
-	 int x = rand() % static_cast<int>(partialSums[POPULATION_SIZE - 1]);
+	 int x = RandomGen::getInstance().intInRange(0, this->partialSums[POPULATION_SIZE - 1]);
 
 	 int res = 0;
 
-	 for(int i = 0; i < POPULATION_SIZE && partialSums[i] < x; ++i)
+	 for(int i = 0; i < POPULATION_SIZE && this->partialSums[i] < x; ++i)
 	 {
 	    res = i;
 	 }
@@ -103,33 +103,27 @@ size_t GeneticAlgorithm::Select() const
 
 void GeneticAlgorithm::Mutate(size_t index)
 {
-	size_t numPositionsToMutate = rand() % 10;
+	size_t numPositionsToMutate = RandomGen::getInstance().intInRange(0, maxMutations);
 	size_t currentPosition;
-	//float currentSigma = sigma - (0.005 * this->generationNumber);
-	//float currentMu = fabs(mu - (0.0001 * this->generationNumber));
 
 	for(size_t i = 0; i < numPositionsToMutate; ++i)
 	{
-		currentPosition = rand() % (this->chromosomeSize);
-		this->currentGeneration[index].weights[currentPosition] += generateGaussianNoise(mu, sigma);
+		currentPosition = RandomGen::getInstance().intInRange(0, this->chromosomeSize - 1);
+		this->currentGeneration[index].weights[currentPosition] +=
+				RandomGen::getInstance().gaussian(mu, sigma);
 	}
 }
 
 
-void GeneticAlgorithm::Crossover(size_t parentIndex1, size_t parentIndex2, Chromosome& child) const
+void GeneticAlgorithm::Crossover(size_t parentIndex1, size_t parentIndex2, Chromosome& child1,
+								 Chromosome& child2) const
 {
-	for(size_t i = 0; i < this->chromosomeSize; ++i)
-	{
-		child.weights[i] = 0.5 * (this->currentGeneration[parentIndex1].weights[i] +
-								  this->currentGeneration[parentIndex1].weights[i]);
-	}
-	/*
 	size_t crosspoint1, crosspoint2;
 
-	crosspoint1 = rand() % (this->chromosomeSize);
+	crosspoint1 = RandomGen::getInstance().intInRange(0, POPULATION_SIZE - 1);
 
 	do{
-		crosspoint2 = rand() % (this->chromosomeSize);
+		crosspoint2 = RandomGen::getInstance().intInRange(0, POPULATION_SIZE - 1);
 	}while(crosspoint1 == crosspoint2);
 
 	if(crosspoint1 > crosspoint2)
@@ -154,31 +148,11 @@ void GeneticAlgorithm::Crossover(size_t parentIndex1, size_t parentIndex2, Chrom
 		child1.weights[i] = this->currentGeneration[parentIndex1].weights[i];
 		child2.weights[i] = this->currentGeneration[parentIndex2].weights[i];
 	}
-	*/
 }
 
 
-double generateGaussianNoise(double mu, double sigma)
+void GeneticAlgorithm::CrossoverOneChild(size_t parentIndex1, size_t parentIndex2, Chromosome& child) const
 {
-	const float epsilon = std::numeric_limits<double>::min();
-	const float twoPi = 2.0*3.14159265358979323846;
 
-	static float z0, z1;
-	static bool generate;
-	generate = !generate;
 
-	if(!generate) return z1 * sigma + mu;
-
-	float u1, u2;
-
-	do
-	{
-	   u1 = rand() * (1.0f / RAND_MAX);
-	   u2 = rand() * (1.0f / RAND_MAX);
-	}while(u1 <= epsilon);
-
-	z0 = sqrt(-2.0 * log(u1)) * cos(twoPi * u2);
-	z1 = sqrt(-2.0 * log(u1)) * sin(twoPi * u2);
-
-	return z0 * sigma + mu;
 }

@@ -1,7 +1,7 @@
 #ifndef GENETIC_ALGORITHM_H
 #define GENETIC_ALGORITHM_H
 
-#define POPULATION_SIZE 1000
+const int POPULATION_SIZE = 500;
 
 #include <vector>
 #include <cstdlib>
@@ -28,16 +28,18 @@ public:
 
 	~GeneticAlgorithm(){};
 
-	std::vector<Chromosome> GetGeneration() const;
+	std::vector<Chromosome>& GetGeneration();
 	void AddChromosomeFitness(size_t chromosomeIndex, int fitness);
 	void NextGenetarion();
 
 private:
 	size_t Select() const;
 	void Mutate(size_t index);
-	void Crossover(size_t parentIndex1, size_t parentIndex2, Chromosome& child)const;
+	void Crossover(size_t parentIndex1, size_t parentIndex2, Chromosome& child1, Chromosome& child2)const;
+	void CrossoverOneChild(size_t parentIndex1, size_t parentIndex2, Chromosome& child)const;
 
 	std::vector<Chromosome> currentGeneration;
+	std::vector<int> partialSums;
 
 	size_t chromosomeSize;
 	size_t generationNumber;

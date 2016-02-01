@@ -50,7 +50,7 @@ int main(int argc, char * argv[])
 	RandomGen::explicitSeed(time(NULL));
 
 	GeneticAlgorithm genAlgo(55);
-	auto nnVals = genAlgo.GetGeneration();
+	auto& nnVals = genAlgo.GetGeneration();
 
 	NeuralNetwork * nets[2];
 	for (int i = 0; i < 2; ++i)
