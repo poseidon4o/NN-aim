@@ -17,8 +17,8 @@ inline void setFitness(Game * games, GeneticAlgorithm& genAlgo)
 		int left, right;
 		games[i].getNNRating(left, right);
 		games[i].reset();
-		genAlgo.AddChromosomeFitness(i * 2, left);
-		genAlgo.AddChromosomeFitness(i * 2 + 1, right);
+		genAlgo.AddChromosomeFitness(i, left);
+		genAlgo.AddChromosomeFitness(i + gamesCnt, right);
 	}
 }
 //makes move on every game
@@ -36,6 +36,37 @@ inline void makeMove(Game * games, NeuralNetwork * nets[2])
 	}
 }
 
+inline void runRound(Game * games, GeneticAlgorithm& genAlgo, NeuralNetwork * nets[2], SDLWrapper& sdl, bool display, bool shuffle = true)
+{
+	auto& nnVals = genAlgo.GetGeneration();
+	if(shuffle)
+		std::random_shuffle(nnVals.begin(), nnVals.end());
+	else
+		std::sort(nnVals.begin(), nnVals.end());
+
+
+	//set new NNs
+	for (int i = 0; i < 2; ++i)
+	{
+		for (int j = 0; j < gamesCnt; ++j)
+		{
+			nets[i][j].setWeights(nnVals[i * gamesCnt + j].weights);
+		}
+	}
+
+	while (!sdl.quit() && !games[0].end())
+	{
+		sdl.checkForEvent();
+		if (display)
+		{
+			SDL_Delay(5);
+			games[0].draw();
+		}
+		makeMove(games, nets);
+	}
+	setFitness(games, genAlgo);
+}
+
 int main(int argc, char * argv[])
 {
 	SDLWrapper sdl(width, height);
@@ -47,7 +78,7 @@ int main(int argc, char * argv[])
 	Game * games = new Game[gamesCnt];
 	for (int i = 0; i < gamesCnt; ++i)
 		games[i].init(&sdl);
-	RandomGen::explicitSeed(time(NULL));
+	//RandomGen::explicitSeed(time(NULL));
 
 	GeneticAlgorithm genAlgo(55);
 	auto& nnVals = genAlgo.GetGeneration();
@@ -61,26 +92,15 @@ int main(int argc, char * argv[])
 
 	while (!sdl.quit())
 	{
+		sprintf(iterChar, "NN-Aim :) Iter: %d", iteration);
+		sdl.setWinTitle(iterChar);
 
-		//set new NNs
-		for (int i = 0; i < 2; ++i)
+		for (int i = 0; i < 10; ++i)
 		{
-			for (int j = 0; j < gamesCnt; ++j)
-			{
-				nets[i][j].setWeights(nnVals[i * gamesCnt + j].weights);
-			}
+			runRound(games, genAlgo, nets, sdl, false);
 		}
+		runRound(games, genAlgo, nets, sdl, true, false);
 
-		while (!sdl.quit() && !games[0].end())
-		{
-			SDL_Delay(5);
-			sprintf(iterChar, "NN-Aim :) Iter: %d", iteration);
-			sdl.setWinTitle(iterChar);
-			sdl.checkForEvent();
-			games[0].draw();
-			makeMove(games, nets);
-		}
-		setFitness(games, genAlgo);
 		genAlgo.NextGenetarion();
 		iteration++;
 	}

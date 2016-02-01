@@ -5,8 +5,8 @@
 #include "NeuralNetwork.h"
 
 //some game constants
-const int width = 640;
-const int height = 480;
+const int width = 960;
+const int height = 720;
 const int bufferZoneSize = 100;
 const int playerFieldWidth = (width - bufferZoneSize) / 2;
 
@@ -15,7 +15,7 @@ const int playerFieldWidth = (width - bufferZoneSize) / 2;
 const float playerRad = 25.f;
 const float playerEyeRad = 5.f;
 const float bulletRad = 5.f;
-const float fovLen = 11.f;
+const float fovLen = 16.f;
 const float fovMargin = 0.05f;
 
 //max speed
@@ -25,13 +25,13 @@ const float bulletSpeed = 4.f;
 const float rotStep = 0.02f;
 
 //start pos
-const Vector2 leftStPos(100.f, 240.f);
-const Vector2 rightStPos(540.f, 240.f);
+const Vector2 leftStPos(100.f, height/2);
+const Vector2 rightStPos(width - 100, height/2);
 const Vector2 leftStDir(1.f, 0.f);
 const Vector2 rightStDir(-1.f, 0.f);
 
 //game limit in frames
-const int maxGameFrames = 2500;
+const int maxGameFrames = 1000;
 
 struct Bullet
 {
