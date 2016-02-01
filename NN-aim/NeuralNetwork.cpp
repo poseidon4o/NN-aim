@@ -40,9 +40,15 @@ Move NeuralNetwork::calculateMove(bool inFov, bool bulletInFov, bool alreadyFire
 {
 	Move move{0};
 
-	std::vector<float> inputs = {static_cast<float>(inFov), static_cast<float>(bulletInFov), static_cast<float>(alreadyFired)};
+	std::vector<float> inputs = {static_cast<float>(inFov), static_cast<float>(bulletInFov),
+			static_cast<float>(alreadyFired), fov};
 
 	std::vector<float> activations(neuronsPerLayer);
+
+	for(auto i = 0; i < inputs.size() - 1; ++i)
+	{
+		inputs[i] = inputs[i] ? 1.f : -1.f;
+	}
 
 	for(const auto& layer: m_layers)
 	{
@@ -58,24 +64,32 @@ Move NeuralNetwork::calculateMove(bool inFov, bool bulletInFov, bool alreadyFire
 			}
 			activations[neuronIndex] += (-1.f) * neuron.m_weights[neuronInputs - 1]; //bias
 
-			if(activations[neuronIndex] > 0)
-			{
-				activations[neuronIndex] = 1.f;
-			}
-			else
-			{
-				activations[neuronIndex] = 0.f;
-			}
+			activations[neuronIndex] = sigmoid(activations[neuronIndex]);
+
+//			if(activations[neuronIndex] > 0)
+//			{
+//				activations[neuronIndex] = 1.f;
+//			}
+//			else
+//			{
+//				activations[neuronIndex] = 0.f;
+//			}
 
 			++neuronIndex;
 		}
 		inputs = activations;
 	}
 
-	move.advanceStraight = static_cast<bool>(activations[0]);
-	move.turnLeft = static_cast<bool>(activations[1]);
-	move.turnRight = static_cast<bool>(activations[2]);
-	move.shoot = static_cast<bool>(activations[3]);
+//	move.advanceStraight = static_cast<bool>(activations[0]);
+//	move.turnLeft = static_cast<bool>(activations[1]);
+//	move.turnRight = static_cast<bool>(activations[2]);
+//	move.shoot = static_cast<bool>(activations[3]);
+
+	move.advanceStraight = static_cast<int>(activations[0] + 0.5f);
+	move.turnLeft = static_cast<int>(activations[1] + 0.5f);
+	move.turnRight = static_cast<int>(activations[2] + 0.5f);
+	move.shoot = static_cast<int>(activations[3] + 0.5f);
+	move.fovMult = activations[4];
 
 	return move;
 }
