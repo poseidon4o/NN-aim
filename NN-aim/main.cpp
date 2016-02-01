@@ -71,8 +71,8 @@ int main(int argc, char * argv[])
 				float left, right;
 				games[i].getNNRaitng(left, right);
 				games[i].reset();
-				genAlgo.SetChromosomeFitness(i * 2, left);
-				genAlgo.SetChromosomeFitness(i * 2 + 1, right);
+				genAlgo.AddChromosomeFitness(i * 2, left);
+				genAlgo.AddChromosomeFitness(i * 2 + 1, right);
 			}
 		}
 

@@ -7,6 +7,7 @@
 
 const float mu = 0.3;
 const float sigma = 0.6;
+const int maxMutations = 1;
 
 bool Chromosome::operator < (const Chromosome& other) const
 {
@@ -41,9 +42,9 @@ std::vector<Chromosome> GeneticAlgorithm::GetGeneration() const
 }
 
 
-void GeneticAlgorithm::SetChromosomeFitness(size_t chromosomeIndex, float fitness)
+void GeneticAlgorithm::AddChromosomeFitness(size_t chromosomeIndex, int fitness)
 {
-	this->currentGeneration[chromosomeIndex].fitness = fitness;
+	this->currentGeneration[chromosomeIndex].fitness += fitness;
 }
 
 
@@ -65,7 +66,7 @@ void GeneticAlgorithm::NextGenetarion()
 
 	this->currentGeneration = newGeneration;
 
-	size_t numChromosomesToMutate = rand() % 10;
+	size_t numChromosomesToMutate = rand() % maxMutations;
 
 	for(size_t i = 0; i < numChromosomesToMutate; ++i)
 	{
