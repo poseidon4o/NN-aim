@@ -175,6 +175,8 @@ void Game::turnRight(int player)
 void Game::changeFov(int player, float mult)
 {
 	m_players[player]->m_crnMargin *= mult;
+	if (m_players[player]->m_crnMargin > maxFovMargin)
+		m_players[player]->m_crnMargin = maxFovMargin;
 }
 
 void Game::shoot(int player)

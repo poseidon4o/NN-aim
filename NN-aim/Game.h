@@ -17,6 +17,7 @@ const float playerEyeRad = 5.f;
 const float bulletRad = 5.f;
 const float fovLen = 16.f;
 const float fovMargin = 0.05f;
+const float maxFovMargin = 0.7f;
 
 //max speed
 //offset = speed * dir
