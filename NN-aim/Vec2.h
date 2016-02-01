@@ -7,6 +7,13 @@ struct Vector2
 	Vector2() : x(0.f), y(0.f) {}
 	Vector2(const float _x, const float _y) : x(_x), y(_y) {}
 
+	void rotate(float angle) {
+		const auto _x = x;
+		const auto _y = y;
+		x = _x * cos(angle) - _y * sin(angle);
+		y = _x * sin(angle) + _y * cos(angle);
+	}
+
 	inline int getIntX() const
 	{
 		return static_cast<int>(x + 0.5f);
