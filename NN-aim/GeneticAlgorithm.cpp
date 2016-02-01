@@ -8,7 +8,8 @@
 
 const float mu = 0.1;
 const float sigma = 0.2;
-const int maxMutations = 1;
+const int maxMutations = 10;
+const int maxCromosomesToMutate = 100;
 const float acceptableDif = 0.3;
 
 bool Chromosome::operator < (const Chromosome& other) const
@@ -71,11 +72,15 @@ void GeneticAlgorithm::NextGenetarion()
 	for(size_t i = 0; i < POPULATION_SIZE; i += 2)
 	{
 		this->Crossover(this->Select(), this->Select(), newGeneration[i], newGeneration[i + 1]);
+//		size_t pIdx1 = this->Select();
+//		size_t pIdx2 = this->Select();
+//		this->CrossoverOneChild(pIdx1, pIdx2, newGeneration[i]);
+//		this->CrossoverOneChild(pIdx2, pIdx1, newGeneration[i + 1]);
 	}
 
 	this->currentGeneration = newGeneration;
 
-	size_t numChromosomesToMutate = RandomGen::getInstance().intInRange(0, POPULATION_SIZE); //rand() % maxMutations;
+	size_t numChromosomesToMutate = RandomGen::getInstance().intInRange(0, maxCromosomesToMutate);
 
 	for(size_t i = 0; i < numChromosomesToMutate; ++i)
 	{
@@ -153,6 +158,19 @@ void GeneticAlgorithm::Crossover(size_t parentIndex1, size_t parentIndex2, Chrom
 
 void GeneticAlgorithm::CrossoverOneChild(size_t parentIndex1, size_t parentIndex2, Chromosome& child) const
 {
+	Chromosome p1 = this->currentGeneration[parentIndex1];
+	Chromosome p2 = this->currentGeneration[parentIndex2];
 
+	for(size_t i = 0; i < this->chromosomeSize; ++i)
+	{
+		if(fabs(p1.weights[i] - p2.weights[i]) > acceptableDif) child.weights[i] = p1.weights[i];
+		else
+		{
+			if(RandomGen::getInstance().intInRange(0,1))
+				child.weights[i] = 0.5 * (p1.weights[i] + p2.weights[i]);
+
+			else child.weights[i] = p1.weights[i];
+		}
+	}
 
 }
