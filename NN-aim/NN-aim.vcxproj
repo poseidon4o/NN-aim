@@ -131,6 +131,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="NeuralNetwork.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="RandomGenerator.cpp" />
     <ClCompile Include="SDLWrapper.cpp" />
     <ClCompile Include="utils.cpp" />
   </ItemGroup>
@@ -139,6 +140,7 @@
     <ClInclude Include="GeneticAlgorithm.h" />
     <ClInclude Include="NeuralNetwork.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="RandomGenerator.h" />
     <ClInclude Include="SDLWrapper.h" />
     <ClInclude Include="utils.h" />
     <ClInclude Include="Vec2.h" />

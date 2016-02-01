@@ -5,6 +5,7 @@
 #include "GeneticAlgorithm.h"
 #include "Game.h"
 #include "NeuralNetwork.h"
+#include "RandomGenerator.h"
 
 const int gamesCnt = POPULATION_SIZE / 2;
 
@@ -45,7 +46,7 @@ int main(int argc, char * argv[])
 	Game * games = new Game[gamesCnt];
 	for (int i = 0; i < gamesCnt; ++i)
 		games[i].init(&sdl);
-	srand(time(NULL));
+	RandomGen::explicitSeed(time(NULL));
 
 	GeneticAlgorithm genAlgo(55);
 	auto nnVals = genAlgo.GetGeneration();

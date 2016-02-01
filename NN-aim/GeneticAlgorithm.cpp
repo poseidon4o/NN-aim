@@ -173,8 +173,8 @@ double generateGaussianNoise(double mu, double sigma)
 
 	do
 	{
-	   u1 = rand() * (1.0 / RAND_MAX);
-	   u2 = rand() * (1.0 / RAND_MAX);
+	   u1 = rand() * (1.0f / RAND_MAX);
+	   u2 = rand() * (1.0f / RAND_MAX);
 	}while(u1 <= epsilon);
 
 	z0 = sqrt(-2.0 * log(u1)) * cos(twoPi * u2);
