@@ -49,29 +49,29 @@ bool Game::end()
 	return m_frameCnt > maxGameFrames/* || m_score[0] >= 3 || m_score[1] >= 3*/;
 }
 
-void Game::getNNRaitng(float& left, float& right)
+void Game::getNNRating(int& left, int& right)
 {
-	left = m_score[0] * 50.f - m_score[1] * 35.f;
-	right = m_score[1] * 50.f - m_score[0] * 35.f;
+	left = m_score[0] * 50 - m_score[1] * 35;
+	right = m_score[1] * 50 - m_score[0] * 35;
 	if (m_score[0] > m_score[1])
 	{
-		left += 300.f;
-		right += -100.f;
+		left += 300;
+		right += -100;
 	}
 	else if (m_score[0] == m_score[1])
 	{
-		left += 50.f;
-		right += 50.f;
+		left += 50;
+		right += 50;
 	}
 	else
 	{
-		left += -100.f;
-		right += 300.f;
+		left += -100;
+		right += 300;
 	}
-	if (left < 0.f)
-		left = 0.f;
-	if (right < 0.f)
-		right = 0.f;
+	if (left < 0)
+		left = 0;
+	if (right < 0)
+		right = 0;
 }
 
 void Game::reset()
