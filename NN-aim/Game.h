@@ -52,7 +52,7 @@ public:
 	void draw();
 	void move();
 	void reset();
-	void getNNRaitng(float& left, float& right);
+	void getNNRating(int& left, int& right);
 	bool end();
 
 	//players are 0 and 1
