@@ -58,9 +58,9 @@ void GeneticAlgorithm::NextGenetarion()
 		newGeneration[i].weights.resize(this->chromosomeSize);
 	}
 
-	for(size_t i = 0; i < POPULATION_SIZE; i += 2)
+	for(size_t i = 0; i < POPULATION_SIZE; ++i)
 	{
-		this->Crossover(this->Select(), this->Select(), newGeneration[i], newGeneration[i+1]);
+		this->Crossover(this->Select(), this->Select(), newGeneration[i]);
 	}
 
 	this->currentGeneration = newGeneration;
@@ -102,8 +102,8 @@ size_t GeneticAlgorithm::Select() const
 
 void GeneticAlgorithm::Mutate(size_t index)
 {
-	size_t numPositionsToMutate = rand() % 10, currentPosition;
-
+	size_t numPositionsToMutate = rand() % 10;
+	size_t currentPosition;
 	//float currentSigma = sigma - (0.005 * this->generationNumber);
 	//float currentMu = fabs(mu - (0.0001 * this->generationNumber));
 
@@ -115,9 +115,14 @@ void GeneticAlgorithm::Mutate(size_t index)
 }
 
 
-void GeneticAlgorithm::Crossover(size_t parentIndex1, size_t parentIndex2,
-								 Chromosome& child1, Chromosome& child2) const
+void GeneticAlgorithm::Crossover(size_t parentIndex1, size_t parentIndex2, Chromosome& child) const
 {
+	for(size_t i = 0; i < this->chromosomeSize; ++i)
+	{
+		child.weights[i] = 0.5 * (this->currentGeneration[parentIndex1].weights[i] +
+								  this->currentGeneration[parentIndex1].weights[i]);
+	}
+	/*
 	size_t crosspoint1, crosspoint2;
 
 	crosspoint1 = rand() % (this->chromosomeSize);
@@ -148,7 +153,7 @@ void GeneticAlgorithm::Crossover(size_t parentIndex1, size_t parentIndex2,
 		child1.weights[i] = this->currentGeneration[parentIndex1].weights[i];
 		child2.weights[i] = this->currentGeneration[parentIndex2].weights[i];
 	}
-
+	*/
 }
 
 
