@@ -120,10 +120,10 @@ void GeneticAlgorithm::Crossover(size_t parentIndex1, size_t parentIndex2, Chrom
 {
 	size_t crosspoint1, crosspoint2;
 
-	crosspoint1 = RandomGen::getInstance().intInRange(0, POPULATION_SIZE - 1);
+	crosspoint1 = RandomGen::getInstance().intInRange(0, this->chromosomeSize - 1);
 
 	do{
-		crosspoint2 = RandomGen::getInstance().intInRange(0, POPULATION_SIZE - 1);
+		crosspoint2 = RandomGen::getInstance().intInRange(0, this->chromosomeSize - 1);
 	}while(crosspoint1 == crosspoint2);
 
 	if(crosspoint1 > crosspoint2)
