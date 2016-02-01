@@ -8,8 +8,10 @@ struct Vector2
 	Vector2(const float _x, const float _y) : x(_x), y(_y) {}
 
 	void rotate(float angle) {
-		x = x * cos(angle) - y * sin(angle);
-		y = x * sin(angle) + y * cos(angle);
+		const auto _x = x;
+		const auto _y = y;
+		x = _x * cos(angle) - _y * sin(angle);
+		y = _x * sin(angle) + _y * cos(angle);
 	}
 
 	inline int getIntX() const
