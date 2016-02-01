@@ -10,9 +10,9 @@
 struct Chromosome
 {
 	std::vector<float> weights;
-	float fitness;
+	int fitness;
 
-	Chromosome(){fitness = 0.f;};
+	Chromosome(){fitness = 0;};
 
 	bool operator < (const Chromosome& other) const;
 };
@@ -29,7 +29,7 @@ public:
 	~GeneticAlgorithm(){};
 
 	std::vector<Chromosome> GetGeneration() const;
-	void SetChromosomeFitness(size_t chromosomeIndex, float fitness);
+	void AddChromosomeFitness(size_t chromosomeIndex, int fitness);
 	void NextGenetarion();
 
 private:

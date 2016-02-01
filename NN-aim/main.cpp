@@ -15,8 +15,8 @@ inline void setFitness(Game * games, GeneticAlgorithm& genAlgo)
 		int left, right;
 		games[i].getNNRating(left, right);
 		games[i].reset();
-		genAlgo.SetChromosomeFitness(i * 2, left);
-		genAlgo.SetChromosomeFitness(i * 2 + 1, right);
+		genAlgo.AddChromosomeFitness(i * 2, left);
+		genAlgo.AddChromosomeFitness(i * 2 + 1, right);
 	}
 }
 //makes move on every game
