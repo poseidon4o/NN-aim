@@ -51,10 +51,8 @@ bool Game::end()
 
 void Game::getNNRating(int& left, int& right)
 {
-	left = 0;
-	right = 0;
-	//left = m_score[0] * 50 - m_score[1] * 35;
-	//right = m_score[1] * 50 - m_score[0] * 35;
+	left = m_score[0] * 50 - m_score[1] * 35;
+	right = m_score[1] * 50 - m_score[0] * 35;
 	if (m_score[0] > m_score[1])
 		left += 300;
 	else if (m_score[0] == m_score[1])
@@ -64,10 +62,10 @@ void Game::getNNRating(int& left, int& right)
 	}
 	else
 		right += 300;
-	//if (left < 0)
-	//	left = 0;
-	//if (right < 0)
-	//	right = 0;
+	if (left < 0)
+		left = 0;
+	if (right < 0)
+		right = 0;
 }
 
 void Game::reset()

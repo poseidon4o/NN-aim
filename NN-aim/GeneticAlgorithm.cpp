@@ -30,7 +30,7 @@ GeneticAlgorithm::GeneticAlgorithm(size_t chromosomeSize)
 
 		for(size_t j = 0; j < chromosomeSize; ++j)
 		{
-			this->currentGeneration[i].weights[j] =  RandomGen::getInstance().gaussian(1, 1);
+			this->currentGeneration[i].weights[j] =  RandomGen::getInstance().uniformDouble(-1.f, 1.f);
 		}
 	}
 
