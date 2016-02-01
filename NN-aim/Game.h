@@ -16,12 +16,13 @@ const float playerRad = 25.f;
 const float playerEyeRad = 5.f;
 const float bulletRad = 5.f;
 const float fovLen = 11.f;
+const float fovMargin = 0.05f;
 
 //max speed
 //offset = speed * dir
 const float playerSpeed = 2.f;
 const float bulletSpeed = 4.f;
-const float rotStep = 0.05f;
+const float rotStep = 0.02f;
 
 //start pos
 const Vector2 leftStPos(100.f, 240.f);

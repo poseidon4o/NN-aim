@@ -6,10 +6,8 @@
 class Player
 {
 public:
-	Player(SDL_Texture * body, SDL_Texture * eye, Vector2 pos, Vector2 dir, float fovScale) :
-		m_body(body), m_eye(eye), m_pos(pos), m_dir(dir), m_fovScale(fovScale),
-		//TODO: set it proper
-		m_crnMargin(0.1f)
+	Player(SDL_Texture * body, SDL_Texture * eye, Vector2 pos, Vector2 dir, float fovScale, float fovMar) :
+		m_body(body), m_eye(eye), m_pos(pos), m_dir(dir), m_fovScale(fovScale), m_crnMargin(fovMar)
 	{
 		int w;
 		SDL_QueryTexture(body, NULL, NULL, &w, NULL);

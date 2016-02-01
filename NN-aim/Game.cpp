@@ -37,8 +37,8 @@ bool Game::init(SDLWrapper * sdl)
 	m_texBullet = m_sdl->createTex(tmpSur);
 
 	//init players
-	m_players[0] = new Player(texPlayer1, texEye, leftStPos, leftStDir, fovLen);
-	m_players[1] = new Player(texPlayer2, texEye, rightStPos, rightStDir, fovLen);
+	m_players[0] = new Player(texPlayer1, texEye, leftStPos, leftStDir, fovLen, fovMargin);
+	m_players[1] = new Player(texPlayer2, texEye, rightStPos, rightStDir, fovLen, fovMargin);
 
 	return true;
 }
@@ -51,8 +51,8 @@ bool Game::end()
 
 void Game::getNNRaitng(float& left, float& right)
 {
-	left = 1000.f + m_score[0] * 50.f - m_score[1] * 25.f - m_bulletsCnt[0];
-	right = 1000.f + m_score[1] * 50.f - m_score[0] * 25.f - m_bulletsCnt[1];
+	left = m_score[0] * 50.f - m_score[1] * 35.f;
+	right = m_score[1] * 50.f - m_score[0] * 35.f;
 	if (m_score[0] > m_score[1])
 	{
 		left += 300.f;
@@ -68,6 +68,10 @@ void Game::getNNRaitng(float& left, float& right)
 		left += -100.f;
 		right += 300.f;
 	}
+	if (left < 0.f)
+		left = 0.f;
+	if (right < 0.f)
+		right = 0.f;
 }
 
 void Game::reset()
@@ -75,7 +79,7 @@ void Game::reset()
 	for (int i = 0; i < 2; ++i)
 		m_bullets[i].active = false;
 	for (int i = 0; i < 2; ++i)
-		m_players[i]->m_crnMargin = 0.1f;
+		m_players[i]->m_crnMargin = fovMargin;
 	m_players[0]->m_pos = leftStPos;
 	m_players[1]->m_pos = rightStPos;
 	m_players[0]->m_dir = leftStDir;
