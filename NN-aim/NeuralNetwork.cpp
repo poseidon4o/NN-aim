@@ -45,7 +45,8 @@ Move NeuralNetwork::calculateMove(bool inFov, bool bulletInFov, bool alreadyFire
 {
 	Move move{0};
 
-	std::vector<float> inputs = {static_cast<float>(inFov), static_cast<float>(bulletInFov), fov};
+	std::vector<float> inputs = {static_cast<float>(inFov), static_cast<float>(bulletInFov),
+			static_cast<float>(alreadyFired),fov};
 
 	std::vector<float> activations(neuronsPerLayer);
 
