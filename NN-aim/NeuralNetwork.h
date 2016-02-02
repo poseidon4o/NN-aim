@@ -39,7 +39,8 @@ public:
 	int weightsCount() const;
 
 private:
-	float sigmoid(float x) const;
+	inline float sigmoid(float x) const;
+	inline bool castToBool(float activation) const;
 
 	static const int neuronsPerLayer = 5;
 	static const int layer1InputsPerNeuron = 4;
