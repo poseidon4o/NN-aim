@@ -67,7 +67,7 @@ Move NeuralNetwork::calculateMove(bool inFov, bool bulletInFov, bool canShoot, f
 			{
 				activations[neuronIndex] += inputs[inputIndex] * neuron.m_weights[inputIndex];
 			}
-			activations[neuronIndex] += (1.f) * neuron.m_weights[neuronInputs - 1]; //bias
+			activations[neuronIndex] += (-1.f) * neuron.m_weights[neuronInputs - 1]; //bias
 
 			activations[neuronIndex] = sigmoid(activations[neuronIndex]);
 
@@ -78,9 +78,9 @@ Move NeuralNetwork::calculateMove(bool inFov, bool bulletInFov, bool canShoot, f
 
 	move.advanceStraight = castToBool(activations[0]);
 	move.turnLeft = castToBool(activations[1]);
-	move.turnRight = !move.turnLeft;
+	move.turnRight = castToBool(activations[2]);
 	move.shoot = castToBool(activations[3]);
-	/* Since activation[i] is in range[0,1]
+	/* Activation[i] is in range[0,1]
 	 * but fov can be 1.5 max
 	 * So we add 0.5 to it
 	 * */

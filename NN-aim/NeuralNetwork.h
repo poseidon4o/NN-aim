@@ -44,7 +44,7 @@ private:
 
 	static const int neuronsPerLayer = 5;
 	static const int layer1InputsPerNeuron = 4;
-	static const int layer2InputsPerNeuron = 4;
+	static const int layer2InputsPerNeuron = 5;
 	static const int layersCount = 2;
 
 	NeuronLayer m_layers[layersCount];
