@@ -71,11 +71,11 @@ void GeneticAlgorithm::NextGenetarion()
 
 	for(size_t i = 0; i < POPULATION_SIZE; i += 2)
 	{
-		//this->Crossover(this->Select(), this->Select(), newGeneration[i], newGeneration[i + 1]);
-		size_t pIdx1 = this->Select();
-		size_t pIdx2 = this->Select();
-		this->CrossoverOneChild(pIdx1, pIdx2, newGeneration[i]);
-		this->CrossoverOneChild(pIdx2, pIdx1, newGeneration[i + 1]);
+		this->Crossover(this->Select(), this->Select(), newGeneration[i], newGeneration[i + 1]);
+//		size_t pIdx1 = this->Select();
+//		size_t pIdx2 = this->Select();
+//		this->CrossoverOneChild(pIdx1, pIdx2, newGeneration[i]);
+//		this->CrossoverOneChild(pIdx2, pIdx1, newGeneration[i + 1]);
 	}
 
 	this->currentGeneration = newGeneration;
