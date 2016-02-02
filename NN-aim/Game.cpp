@@ -1,7 +1,7 @@
 #include "Game.h"
 #include "RandomGenerator.h"
 
-Game::Game()
+Game::Game(int maxFrames): m_maxGameFrames(maxFrames)
 {
 	m_score[0] = m_score[1] = m_frameCnt = m_bulletsCnt[0] = m_bulletsCnt[1] = 0;
 }
@@ -59,7 +59,7 @@ bool Game::init(SDLWrapper * sdl)
 
 bool Game::end()
 {
-	return m_frameCnt > maxGameFrames;
+	return m_frameCnt > m_maxGameFrames;
 }
 
 void Game::getNNRating(int& left, int& right)

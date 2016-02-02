@@ -32,7 +32,7 @@ const Vector2 leftStDir(1.f, 0.f);
 const Vector2 rightStDir(-1.f, 0.f);
 
 //game limit in frames
-const int maxGameFrames = 2500;
+const int maxGameFrames = 2000;
 
 struct Bullet
 {
@@ -46,7 +46,7 @@ struct Bullet
 class Game
 {
 public:
-	Game();
+	Game(int maxFrames = maxGameFrames);
 	~Game();
 	bool init(SDLWrapper * sdl);
 
@@ -79,6 +79,7 @@ private:
 	int m_score[2];//game score
 	int m_frameCnt;
 	int m_bulletsCnt[2];
+	const int m_maxGameFrames;
 
 	void checkForHit();
 	void remInactiveBullets();

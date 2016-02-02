@@ -75,14 +75,14 @@ void runRounds(int iterCnt, Game* games, GeneticAlgorithm& genAlgo, NeuralNetwor
 	}
 }
 
-void displayGame(NeuralNetwork nets[2], SDLWrapper& sdl)
+void displayGame(NeuralNetwork nets[2], SDLWrapper& sdl, int framesCount)
 {
-	Game game;
+	Game game(framesCount);
 	game.init(&sdl);
 	while(!sdl.quit() && !game.end())
 	{
 		sdl.checkForEvent();
-		SDL_Delay(1);
+		SDL_Delay(5);
 		game.draw();
 
 		Move move;
@@ -132,16 +132,18 @@ int main(int argc, char * argv[])
 		displayGameNets[1].setWeights(nnVals[gamesCnt + gameIndex].weights);
 
 		std::thread rounds(runRounds, 10, games, std::ref(genAlgo), nets, std::ref(sdl), false);
-//		for (int i = 0; i < 10; ++i)
-//		{
-//			runRound(games, genAlgo, nets, sdl, false);
-//		}
 
-		displayGame(displayGameNets, sdl);
+		displayGame(displayGameNets, sdl, 10000);
 
 		rounds.join();
 
-		runRound(games, genAlgo, nets, sdl, true, false);
+		//runRound(games, genAlgo, nets, sdl, true, false);
+		std::sort(nnVals.begin(), nnVals.end());
+		for(int i = 0; i < 2; ++i)
+		{
+			displayGameNets[i].setWeights(nnVals[i].weights);
+		}
+		displayGame(displayGameNets, sdl, 4000);
 
 		genAlgo.NextGenetarion();
 		iteration++;
