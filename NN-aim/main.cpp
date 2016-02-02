@@ -7,6 +7,7 @@
 #include "NeuralNetwork.h"
 #include "RandomGenerator.h"
 
+#include <thread>
 
 const int gamesCnt = POPULATION_SIZE / 2;
 
@@ -36,14 +37,13 @@ inline void makeMove(Game * games, NeuralNetwork * nets[2])
 	}
 }
 
-inline void runRound(Game * games, GeneticAlgorithm& genAlgo, NeuralNetwork * nets[2], SDLWrapper& sdl, bool display, bool shuffle = true)
+void runRound(Game * games, GeneticAlgorithm& genAlgo, NeuralNetwork * nets[2], SDLWrapper& sdl, bool display, bool shuffle = true)
 {
 	auto& nnVals = genAlgo.GetGeneration();
 	if(shuffle)
 		std::random_shuffle(nnVals.begin(), nnVals.end());
 	else
 		std::sort(nnVals.begin(), nnVals.end());
-
 
 	//set new NNs
 	for (int i = 0; i < 2; ++i)
@@ -65,6 +65,37 @@ inline void runRound(Game * games, GeneticAlgorithm& genAlgo, NeuralNetwork * ne
 		makeMove(games, nets);
 	}
 	setFitness(games, genAlgo);
+}
+
+void runRounds(int iterCnt, Game* games, GeneticAlgorithm& genAlgo, NeuralNetwork * nets[2], SDLWrapper& sdl, bool display)
+{
+	for(int i = 0; i < iterCnt; ++i)
+	{
+		runRound(games, genAlgo, nets, sdl, false);
+	}
+}
+
+void displayGame(NeuralNetwork nets[2], SDLWrapper& sdl, int framesCount)
+{
+	Game game(framesCount);
+	game.init(&sdl);
+	while(!sdl.quit() && !game.end())
+	{
+		sdl.checkForEvent();
+		SDL_Delay(5);
+		game.draw();
+
+		Move move;
+
+		for(int i = 0; i < 2; ++i)
+		{
+			move = nets[i].calculateMove(game.playerInFov(i), game.bulletInFov(i),
+					game.canShoot(i), game.currentFov(i));
+			game.makeMove(i, move);
+			game.move();
+		}
+	}
+
 }
 
 int main(int argc, char * argv[])
@@ -95,11 +126,24 @@ int main(int argc, char * argv[])
 		sprintf(iterChar, "NN-Aim :) Iter: %d", iteration);
 		sdl.setWinTitle(iterChar);
 
-		for (int i = 0; i < 10; ++i)
+		int gameIndex = RandomGen::getInstance().intInRange(0, gamesCnt - 1);
+		NeuralNetwork displayGameNets[2];
+		displayGameNets[0].setWeights(nnVals[gameIndex].weights);
+		displayGameNets[1].setWeights(nnVals[gamesCnt + gameIndex].weights);
+
+		std::thread rounds(runRounds, 10, games, std::ref(genAlgo), nets, std::ref(sdl), false);
+
+		displayGame(displayGameNets, sdl, 10000);
+
+		rounds.join();
+
+		//runRound(games, genAlgo, nets, sdl, true, false);
+		std::sort(nnVals.begin(), nnVals.end());
+		for(int i = 0; i < 2; ++i)
 		{
-			runRound(games, genAlgo, nets, sdl, false);
+			displayGameNets[i].setWeights(nnVals[i].weights);
 		}
-		runRound(games, genAlgo, nets, sdl, true, false);
+		displayGame(displayGameNets, sdl, 4000);
 
 		genAlgo.NextGenetarion();
 		iteration++;
