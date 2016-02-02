@@ -121,15 +121,19 @@ int main(int argc, char * argv[])
 	int iteration = 0;
 	char iterChar[64];
 
+	NeuralNetwork displayGameNets[2];
+
+	int gameIndex = RandomGen::getInstance().intInRange(0, gamesCnt - 1);
+	auto firstBestWeights = nnVals[gameIndex].weights;
+	auto secondBestWeights = nnVals[gamesCnt + gameIndex].weights;
+
 	while (!sdl.quit())
 	{
 		sprintf(iterChar, "NN-Aim :) Iter: %d", iteration);
 		sdl.setWinTitle(iterChar);
 
-		int gameIndex = RandomGen::getInstance().intInRange(0, gamesCnt - 1);
-		NeuralNetwork displayGameNets[2];
-		displayGameNets[0].setWeights(nnVals[gameIndex].weights);
-		displayGameNets[1].setWeights(nnVals[gamesCnt + gameIndex].weights);
+		displayGameNets[0].setWeights(firstBestWeights);
+		displayGameNets[1].setWeights(secondBestWeights);
 
 		std::thread rounds(runRounds, 10, games, std::ref(genAlgo), nets, std::ref(sdl), false);
 
@@ -137,13 +141,9 @@ int main(int argc, char * argv[])
 
 		rounds.join();
 
-		//runRound(games, genAlgo, nets, sdl, true, false);
 		std::sort(nnVals.begin(), nnVals.end());
-		for(int i = 0; i < 2; ++i)
-		{
-			displayGameNets[i].setWeights(nnVals[i].weights);
-		}
-		displayGame(displayGameNets, sdl, 4000);
+		firstBestWeights = nnVals[0].weights;
+		secondBestWeights = nnVals[1].weights;
 
 		genAlgo.NextGenetarion();
 		iteration++;
