@@ -71,11 +71,11 @@ void GeneticAlgorithm::NextGenetarion()
 
 	for(size_t i = 0; i < POPULATION_SIZE; i += 2)
 	{
-		this->Crossover(this->Select(), this->Select(), newGeneration[i], newGeneration[i + 1]);
-//		size_t pIdx1 = this->Select();
-//		size_t pIdx2 = this->Select();
-//		this->CrossoverOneChild(pIdx1, pIdx2, newGeneration[i]);
-//		this->CrossoverOneChild(pIdx2, pIdx1, newGeneration[i + 1]);
+		//this->Crossover(this->Select(), this->Select(), newGeneration[i], newGeneration[i + 1]);
+		size_t pIdx1 = this->Select();
+		size_t pIdx2 = this->Select();
+		this->CrossoverOneChild(pIdx1, pIdx2, newGeneration[i]);
+		this->CrossoverOneChild(pIdx2, pIdx1, newGeneration[i + 1]);
 	}
 
 	this->currentGeneration = newGeneration;
@@ -169,7 +169,7 @@ void GeneticAlgorithm::CrossoverOneChild(size_t parentIndex1, size_t parentIndex
 			if(RandomGen::getInstance().intInRange(0,1))
 				child.weights[i] = 0.5 * (p1.weights[i] + p2.weights[i]);
 
-			else child.weights[i] = p1.weights[i];
+			else child.weights[i] = p2.weights[i];
 		}
 	}
 
