@@ -82,7 +82,7 @@ void displayGame(NeuralNetwork nets[2], SDLWrapper& sdl, int framesCount)
 	while(!sdl.quit() && !game.end())
 	{
 		sdl.checkForEvent();
-		SDL_Delay(5);
+		SDL_Delay(3);
 		game.draw();
 
 		Move move;
@@ -135,7 +135,7 @@ int main(int argc, char * argv[])
 		displayGameNets[0].setWeights(firstBestWeights);
 		displayGameNets[1].setWeights(secondBestWeights);
 
-		std::thread rounds(runRounds, 10, games, std::ref(genAlgo), nets, std::ref(sdl), false);
+		std::thread rounds(runRounds, 20, games, std::ref(genAlgo), nets, std::ref(sdl), false);
 
 		displayGame(displayGameNets, sdl, 10000);
 
