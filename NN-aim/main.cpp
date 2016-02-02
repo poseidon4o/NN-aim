@@ -1,3 +1,8 @@
+#if _MSC_VER >= 1900
+	#include <cstdio>
+	extern "C" { FILE __iob_func[3] = { *stdin, *stdout, *stderr }; }
+#endif
+
 #include <iostream>
 #include <ctime>
 #include <algorithm>
