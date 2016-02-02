@@ -30,7 +30,7 @@ inline void makeMove(Game * games, NeuralNetwork * nets[2])
 	{
 		for (int j = 0; j < 2; ++j)
 		{
-			move = nets[j][i].calculateMove(games[i].playerInFov(j), games[i].bulletInFov(j), !games[i].canShoot(j), games[i].currentFov(j));
+			move = nets[j][i].calculateMove(games[i].playerInFov(j), games[i].bulletInFov(j), games[i].canShoot(j), games[i].currentFov(j));
 			games[i].makeMove(j, move);
 			games[i].move();
 		}
@@ -90,7 +90,7 @@ void displayGame(NeuralNetwork nets[2], SDLWrapper& sdl, int framesCount)
 		for(int i = 0; i < 2; ++i)
 		{
 			move = nets[i].calculateMove(game.playerInFov(i), game.bulletInFov(i),
-					!game.canShoot(i), game.currentFov(i));
+					game.canShoot(i), game.currentFov(i));
 			game.makeMove(i, move);
 			game.move();
 		}

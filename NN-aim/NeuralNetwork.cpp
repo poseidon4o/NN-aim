@@ -41,12 +41,12 @@ bool NeuralNetwork::castToBool(float activation) const
 	return activation >= 0.5f ? true : false;
 }
 
-Move NeuralNetwork::calculateMove(bool inFov, bool bulletInFov, bool alreadyFired, float fov)
+Move NeuralNetwork::calculateMove(bool inFov, bool bulletInFov, bool canShoot, float fov)
 {
 	Move move{0};
 
 	std::vector<float> inputs = {static_cast<float>(inFov), static_cast<float>(bulletInFov),
-			static_cast<float>(alreadyFired),fov};
+			static_cast<float>(canShoot),fov};
 
 	std::vector<float> activations(neuronsPerLayer);
 
