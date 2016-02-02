@@ -78,6 +78,7 @@ void runRounds(int iterCnt, Game* games, GeneticAlgorithm& genAlgo, NeuralNetwor
 void displayGame(NeuralNetwork nets[2], SDLWrapper& sdl)
 {
 	Game game;
+	game.init(&sdl);
 	while(!sdl.quit() && !game.end())
 	{
 		sdl.checkForEvent();
