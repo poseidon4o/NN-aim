@@ -196,6 +196,9 @@ void Game::changeFov(int player, float mult)
 	m_players[player]->m_crnMargin *= mult;
 	if (m_players[player]->m_crnMargin > maxFovMargin)
 		m_players[player]->m_crnMargin = maxFovMargin;
+
+	if(m_players[player]->m_crnMargin < minFovMargin)
+		m_players[player]->m_crnMargin = minFovMargin;
 }
 
 void Game::shoot(int player)
