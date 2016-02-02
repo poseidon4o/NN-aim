@@ -15,7 +15,7 @@ inline void setFitness(Game * games, GeneticAlgorithm& genAlgo)
 {
 	for (int i = 0; i < gamesCnt; ++i)
 	{
-		int left, right;
+		int left = 0, right = 0;
 		games[i].getNNRating(left, right);
 		games[i].reset();
 		genAlgo.AddChromosomeFitness(i, left);

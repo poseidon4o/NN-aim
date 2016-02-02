@@ -8,7 +8,7 @@
 
 const float mu = 0.1;
 const float sigma = 0.2;
-const int maxMutations = 10;
+const int maxMutations = 1;
 const int maxCromosomesToMutate = 100;
 const float acceptableDif = 0.3;
 
