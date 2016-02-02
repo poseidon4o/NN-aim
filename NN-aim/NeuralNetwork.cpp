@@ -36,6 +36,11 @@ float NeuralNetwork::sigmoid(float activation) const
 	return 1.f / (1.f + exp(-activation));
 }
 
+bool NeuralNetwork::castToBool(float activation) const
+{
+	return activation >= 0.5f ? true : false;
+}
+
 Move NeuralNetwork::calculateMove(bool inFov, bool bulletInFov, bool alreadyFired, float fov)
 {
 	Move move{0};
@@ -66,29 +71,19 @@ Move NeuralNetwork::calculateMove(bool inFov, bool bulletInFov, bool alreadyFire
 
 			activations[neuronIndex] = sigmoid(activations[neuronIndex]);
 
-//			if(activations[neuronIndex] > 0)
-//			{
-//				activations[neuronIndex] = 1.f;
-//			}
-//			else
-//			{
-//				activations[neuronIndex] = 0.f;
-//			}
-
 			++neuronIndex;
 		}
 		inputs = activations;
 	}
 
-//	move.advanceStraight = static_cast<bool>(activations[0]);
-//	move.turnLeft = static_cast<bool>(activations[1]);
-//	move.turnRight = static_cast<bool>(activations[2]);
-//	move.shoot = static_cast<bool>(activations[3]);
-
-	move.advanceStraight = static_cast<int>(activations[0] + 0.5f);
-	move.turnLeft = static_cast<int>(activations[1] + 0.5f);
-	move.turnRight = static_cast<int>(activations[2] + 0.5f);
-	move.shoot = static_cast<int>(activations[3] + 0.5f);
+	move.advanceStraight = castToBool(activations[0]);
+	move.turnLeft = castToBool(activations[1]);
+	move.turnRight = castToBool(activations[2]);
+	move.shoot = castToBool(activations[3]);
+	/* Since activation[i] is in range[0,1]
+	 * but fov can be 1.5 max
+	 * So we add 0.5 to it
+	 * */
 	move.fovMult = activations[4] + 0.5f;
 
 	return move;
