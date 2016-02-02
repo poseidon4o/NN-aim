@@ -64,8 +64,8 @@ bool Game::end()
 
 void Game::getNNRating(int& left, int& right)
 {
-	left = 10 + 3 * m_score[0] - 2 * m_score[1];
-	right = 10 + 3 * m_score[1] - 2 * m_score[0];
+	left = 10 + 3 * m_score[0] - 3 * m_score[1];
+	right = 10 + 3 * m_score[1] - 3 * m_score[0];
 	if (m_score[0] > m_score[1])
 		left += 60;
 	else if (m_score[0] == m_score[1])
