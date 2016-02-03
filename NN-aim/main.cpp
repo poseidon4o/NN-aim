@@ -116,7 +116,7 @@ int main(int argc, char * argv[])
 		games[i].init(&sdl);
 	//RandomGen::explicitSeed(time(NULL));
 
-	GeneticAlgorithm genAlgo(55);
+	GeneticAlgorithm genAlgo(NeuralNetwork().weightsCount());
 	auto& nnVals = genAlgo.GetGeneration();
 
 	NeuralNetwork * nets[2];
