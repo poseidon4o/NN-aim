@@ -41,7 +41,7 @@ bool NeuralNetwork::castToBool(float activation) const
 	return activation >= 0.5f ? true : false;
 }
 
-Move NeuralNetwork::calculateMove(bool inFov, bool bulletInFov, bool canShoot, float fov)
+Move NeuralNetwork::calculateMove(bool inFov, bool bulletInFov, bool canShoot, float fov) const
 {
 	Move move{0};
 

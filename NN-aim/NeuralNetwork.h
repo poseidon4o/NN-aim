@@ -33,7 +33,7 @@ class NeuralNetwork
 {
 public:
 	NeuralNetwork();
-	Move calculateMove(bool inFov, bool bulletInFov, bool canShoot, float fov);
+	Move calculateMove(bool inFov, bool bulletInFov, bool canShoot, float fov) const;
 	std::vector<float> getWeights() const;
 	void setWeights(const std::vector<float>& newWeights);
 	int weightsCount() const;
