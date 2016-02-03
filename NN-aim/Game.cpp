@@ -68,14 +68,14 @@ void Game::getNNRating(int& left, int& right)
 	right -= m_score[0] * 3;
 	if (m_score[0] > m_score[1])
 	{
-		left = 60;
+		left += 60;
 	}
 	else if (m_score[0] == m_score[1])
 	{
-		left = 20;
-		right = 20;
+		left += 20;
+		right += 20;
 	}
-	else right = 60;
+	else right += 60;
 	if (left <= 0) left = 1;
 	if (right <= 0) left = 1;
 }
