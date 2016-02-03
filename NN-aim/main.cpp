@@ -148,7 +148,7 @@ int main(int argc, char * argv[])
 
 		std::sort(nnVals.begin(), nnVals.end());
 		firstBestWeights = nnVals[0].weights;
-		secondBestWeights = nnVals[1].weights;
+		secondBestWeights = nnVals[10].weights;
 
 		genAlgo.NextGenetarion();
 		iteration++;

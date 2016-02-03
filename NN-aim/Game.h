@@ -23,7 +23,7 @@ const float maxFovMargin = 0.7f;
 //max speed
 //offset = speed * dir
 const float playerSpeed = 2.f;
-const float bulletSpeed = 4.f;
+const float bulletSpeed = 3.f;
 const float rotStep = 0.02f;
 
 //start pos
